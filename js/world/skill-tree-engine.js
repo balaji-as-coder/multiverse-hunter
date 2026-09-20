@@ -84,25 +84,45 @@ class SkillTreeEngine {
             const branch = this.branches[bKey];
             const nodesHtml = branch.nodes.map((n, idx) => {
                 const isLast = idx === branch.nodes.length - 1;
-                return `
-                    <div class="skill-node-item">
-                        <div class="skill-node-card ${n.unlocked ? 'node-unlocked' : 'node-locked'}" data-node-id="${n.id}" style="border-color: ${n.unlocked ? branch.color : 'rgba(255,255,255,0.08)'}">
-                            <div class="sn-icon-wrap" style="box-shadow: ${n.unlocked ? `0 0 20px ${branch.color}55` : 'none'}">
-                                ${n.icon}
-                            </div>
-                            <div class="sn-details">
-                                <div class="sn-tier font-10" style="color: ${branch.color}">TIER ${n.tier}</div>
-                                <h4 class="sn-name">${n.name}</h4>
-                                <p class="sn-desc font-11 text-muted mt-2">${n.desc}</p>
-                                <div class="sn-req font-10 mt-6 ${n.unlocked ? 'highlight-green' : 'text-muted'}">
-                                    ${n.unlocked ? '✓ UNLOCKED & ACTIVE' : `🔒 ${n.req}`}
+                if (n.unlocked) {
+                    return `
+                        <div class="skill-node-item">
+                            <div class="skill-node-card node-unlocked" data-node-id="${n.id}" style="border-color: ${branch.color}">
+                                <div class="sn-icon-wrap" style="box-shadow: 0 0 20px ${branch.color}55">
+                                    ${n.icon}
+                                </div>
+                                <div class="sn-details">
+                                    <div class="sn-tier font-10" style="color: ${branch.color}">TIER ${n.tier}</div>
+                                    <h4 class="sn-name">${n.name}</h4>
+                                    <p class="sn-desc font-11 text-muted mt-2">${n.desc}</p>
+                                    <div class="sn-req font-10 mt-6 highlight-green">
+                                        ✓ UNLOCKED & ACTIVE
+                                    </div>
                                 </div>
                             </div>
-                            ${!n.unlocked ? `<button class="btn-secondary-holo btn-sm btn-unlock-node mt-8" data-node-id="${n.id}">UNLOCK SKILL</button>` : ''}
+                            ${!isLast ? `<div class="skill-connector-down"><span class="sc-dot" style="background: ${branch.color}"></span></div>` : ''}
                         </div>
-                        ${!isLast ? `<div class="skill-connector-down"><span class="sc-dot" style="background: ${branch.color}"></span></div>` : ''}
-                    </div>
-                `;
+                    `;
+                } else {
+                    return `
+                        <div class="skill-node-item">
+                            <div class="skill-node-card dimensional-gate-locked" data-node-id="${n.id}">
+                                <div class="gate-rift-overlay"></div>
+                                <div class="sn-icon-wrap font-22">🔒</div>
+                                <div class="sn-details">
+                                    <div class="sn-tier font-10 text-muted">DIMENSIONAL GATE // TIER ${n.tier}</div>
+                                    <h4 class="sn-name">[ UNKNOWN SKILL ]</h4>
+                                    <p class="sn-desc font-11 text-muted mt-2">Locked in dimensional rift. Fulfill habit prerequisite to unlock.</p>
+                                    <div class="sn-req font-10 mt-6 highlight-crimson">
+                                        🔒 ${n.req}
+                                    </div>
+                                </div>
+                                <button class="btn-cinematic-danger btn-sm btn-unlock-node mt-8" data-node-id="${n.id}">⚔ SHATTER GATE & UNLOCK</button>
+                            </div>
+                            ${!isLast ? `<div class="skill-connector-down"><span class="sc-dot" style="background: rgba(255,255,255,0.15)"></span></div>` : ''}
+                        </div>
+                    `;
+                }
             }).join('');
 
             return `

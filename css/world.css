@@ -727,6 +727,30 @@ body.world-night .world-hub-stage {
     background: rgba(22, 26, 36, 0.85);
 }
 
+.skill-node-card.dimensional-gate-locked {
+    background: radial-gradient(circle at 50% 50%, #18080d 0%, #090306 100%);
+    border: 1px dashed rgba(239, 68, 68, 0.45) !important;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.18), inset 0 0 15px rgba(0, 0, 0, 0.9);
+    position: relative;
+    overflow: hidden;
+}
+
+.gate-rift-overlay {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(239, 68, 68, 0.1) 0%, transparent 65%);
+    animation: riftPulse 4s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+
+@keyframes riftPulse {
+    0% { transform: rotate(0deg) scale(0.9); opacity: 0.5; }
+    100% { transform: rotate(180deg) scale(1.1); opacity: 0.9; }
+}
+
 .sn-icon-wrap {
     font-size: 22px;
     margin-bottom: 6px;
