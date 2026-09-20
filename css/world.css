@@ -1480,5 +1480,97 @@ body.world-night .world-hub-stage {
     align-items: center;
 }
 
+/* ================= V3.6 POST-SET RIR & FORM CALIBRATION STYLES ================= */
+.post-set-calibration-card {
+    background: rgba(18, 22, 32, 0.9);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    border-radius: var(--card-radius);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
 
+.rir-pill-selector, .form-pill-selector {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+    gap: 6px;
+}
 
+.btn-rir-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--pill-radius);
+    padding: 8px 4px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: var(--font-system);
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--trans-fast);
+    text-align: center;
+}
+
+.btn-rir-pill:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+
+.btn-rir-pill.active {
+    background: rgba(56, 189, 248, 0.25);
+    border-color: #38bdf8;
+    color: #38bdf8;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+}
+
+.btn-rir-pill.active.rir-0 {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #ef4444;
+    color: #f87171;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+}
+
+.btn-rir-pill.active.rir-2 {
+    background: rgba(34, 197, 94, 0.25);
+    border-color: #22c55e;
+    color: #4ade80;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+}
+
+.btn-form-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--pill-radius);
+    padding: 8px 10px;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-family: var(--font-system);
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--trans-fast);
+    text-align: center;
+}
+
+.btn-form-pill:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn-form-pill.active.form-clean {
+    background: rgba(34, 197, 94, 0.25);
+    border-color: #22c55e;
+    color: #4ade80;
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.4);
+}
+
+.btn-form-pill.active.form-acc {
+    background: rgba(245, 158, 11, 0.25);
+    border-color: #f59e0b;
+    color: #fbbf24;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+}
+
+.btn-form-pill.active.form-comp {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: #ef4444;
+    color: #f87171;
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.4);
+}

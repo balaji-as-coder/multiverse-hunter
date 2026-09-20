@@ -443,16 +443,26 @@ class JourneyEngine {
         const primaryEx = step.exercises ? step.exercises[0] : { id: 'ex_1', name: 'Compound Movement', sets: 4, reps: 10, weight: 80, prevWeight: 75 };
         const records = this.getExercisePerformanceRecords(primaryEx.id, 65);
 
+        // Resolve persistent adaptive targets from System State if previously calculated
+        const sData = window.systemState ? window.systemState.data : null;
+        const savedTarget = (sData && sData.adaptiveExerciseTargets) ? sData.adaptiveExerciseTargets[primaryEx.id] : null;
+
+        const resolvedWeight = (savedTarget && typeof savedTarget.weightKg === 'number') ? savedTarget.weightKg : (primaryEx.weight || 80);
+        const resolvedReps = (savedTarget && typeof savedTarget.reps === 'number') ? savedTarget.reps : (primaryEx.reps || 10);
+        const prevWeight = (savedTarget && typeof primaryEx.weight === 'number') ? primaryEx.weight : (primaryEx.prevWeight || (resolvedWeight > 0 ? resolvedWeight - 2.5 : 0));
+
         this.activeSetSession = {
             step,
             currentExIndex: 0,
             currentSet: 1,
             totalSets: primaryEx.sets || 4,
-            targetReps: primaryEx.reps || 10,
+            targetReps: resolvedReps,
             completedReps: 0,
-            weightKg: primaryEx.weight || 80,
-            prevWeightKg: primaryEx.prevWeight || 75,
+            weightKg: resolvedWeight,
+            prevWeightKg: prevWeight,
             records: records,
+            selectedRir: 2,
+            selectedForm: 'CLEAN',
             isComplete: false
         };
 
@@ -576,7 +586,7 @@ class JourneyEngine {
                         </div>
                         <div class="weic-item">
                             <span class="font-9 text-muted">TODAY'S ADAPTIVE TARGET</span>
-                            <strong class="font-11 highlight-green">${why.current}</strong>
+                            <strong class="font-11 highlight-green">${sess.weightKg} KG × ${targetR} REPS</strong>
                         </div>
                     </div>
                     <p class="font-11 text-secondary mt-8"><strong>Biomechanical Goal:</strong> ${why.adaptation}</p>
@@ -676,7 +686,7 @@ class JourneyEngine {
                                     const x = 30 + idx * Math.min(65, 240 / Math.max(1, plotValues.length - 1));
                                     const y = 120 - ((val - minVal) / range) * 80;
                                     return `<circle cx="${x}" cy="${y}" r="4" fill="#00f2fe" class="slg-dot" /><text x="${x}" y="${y - 8}" font-size="9" fill="#9ca3af" text-anchor="middle">${val}</text>`;
-                                }).join('')}
+                                })}
                             </svg>
                             <div class="viz-graph-labels font-9 text-muted" style="display:flex; justify-content:space-around; margin-top:2px;">
                                 ${records.map((r, i) => `<span>${r.tag === 'SEED BASELINE' ? 'BASELINE' : `SET ${i}`}</span>`).join('')}
@@ -712,10 +722,45 @@ class JourneyEngine {
                         </div>
                     </div>
 
+                    <!-- V3.6 POST-SET RIR & FORM QUALITY CALIBRATION PANEL -->
+                    <div class="post-set-calibration-card mt-15 p-12">
+                        <div class="psc-top" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="highlight-gold font-11">🎯 POST-SET EFFORT & FORM CALIBRATION</span>
+                            <span class="font-9 text-muted uppercase">[TRUTH ENGINE VERIFICATION]</span>
+                        </div>
+
+                        <div class="psc-field mt-10">
+                            <div class="font-10 text-muted" style="display:flex; justify-content:space-between;">
+                                <span>REPS IN RESERVE (RIR / PROXIMITY TO FAILURE):</span>
+                                <strong class="highlight-cyan font-10">${sess.selectedRir === 0 ? '0 (Max Effort / Failure)' : sess.selectedRir === 2 ? '2 (Target Sweet Spot)' : `${sess.selectedRir} Reps Left`}</strong>
+                            </div>
+                            <div class="rir-pill-selector mt-6">
+                                <button type="button" class="btn-rir-pill ${sess.selectedRir === 0 ? 'active rir-0' : ''}" data-rir="0">0 (Max)</button>
+                                <button type="button" class="btn-rir-pill ${sess.selectedRir === 1 ? 'active rir-1' : ''}" data-rir="1">1</button>
+                                <button type="button" class="btn-rir-pill ${sess.selectedRir === 2 ? 'active rir-2' : ''}" data-rir="2">2 (Target)</button>
+                                <button type="button" class="btn-rir-pill ${sess.selectedRir === 3 ? 'active' : ''}" data-rir="3">3</button>
+                                <button type="button" class="btn-rir-pill ${sess.selectedRir === 4 ? 'active' : ''}" data-rir="4">4</button>
+                                <button type="button" class="btn-rir-pill ${sess.selectedRir >= 5 ? 'active' : ''}" data-rir="5">5+ (Easy)</button>
+                            </div>
+                        </div>
+
+                        <div class="psc-field mt-12">
+                            <div class="font-10 text-muted" style="display:flex; justify-content:space-between;">
+                                <span>FORM QUALITY:</span>
+                                <strong class="highlight-gold font-10">${sess.selectedForm === 'CLEAN' ? '✨ Strict Form' : sess.selectedForm === 'ACCEPTABLE' ? '⚖️ Acceptable' : '⚠️ Compromised (Blocks Overload)'}</strong>
+                            </div>
+                            <div class="form-pill-selector mt-6">
+                                <button type="button" class="btn-form-pill ${sess.selectedForm === 'CLEAN' ? 'active form-clean' : ''}" data-form="CLEAN">✨ Clean</button>
+                                <button type="button" class="btn-form-pill ${sess.selectedForm === 'ACCEPTABLE' ? 'active form-acc' : ''}" data-form="ACCEPTABLE">⚖️ Acceptable</button>
+                                <button type="button" class="btn-form-pill ${sess.selectedForm === 'COMPROMISED' ? 'active form-comp' : ''}" data-form="COMPROMISED">⚠️ Compromised</button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Log & Complete Set Action -->
                     <div class="active-set-action-bar mt-20">
                         <button id="btn-finish-active-set" class="btn-primary-holo btn-wide btn-lg btn-glow-violet">
-                            ⚔ LOG & COMPLETE SET ${sess.currentSet} (${sess.completedReps > 0 ? sess.completedReps : targetR} REPS @ ${sess.weightKg} KG)
+                            ⚔ CONFIRM & LOG SET ${sess.currentSet} (${sess.completedReps > 0 ? sess.completedReps : targetR} REPS @ ${sess.weightKg} KG | RIR: ${sess.selectedRir})
                         </button>
                     </div>
                 </div>
@@ -792,6 +837,32 @@ class JourneyEngine {
             });
         });
 
+        // RIR Pill Selection
+        modal.querySelectorAll('.btn-rir-pill').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const rirVal = parseInt(btn.dataset.rir, 10);
+                if (!isNaN(rirVal)) {
+                    sess.selectedRir = rirVal;
+                    if (window.systemAudio) window.systemAudio.playClick();
+                    this.renderActiveSetModal();
+                }
+            });
+        });
+
+        // Form Pill Selection
+        modal.querySelectorAll('.btn-form-pill').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const formVal = btn.dataset.form;
+                if (formVal) {
+                    sess.selectedForm = formVal;
+                    if (window.systemAudio) window.systemAudio.playClick();
+                    this.renderActiveSetModal();
+                }
+            });
+        });
+
         // Finish set
         const btnFinishSet = modal.querySelector('#btn-finish-active-set');
         if (btnFinishSet) {
@@ -808,6 +879,8 @@ class JourneyEngine {
         const ex = sess.step.exercises[sess.currentExIndex];
         const targetR = Math.max(1, typeof sess.targetReps === 'number' ? sess.targetReps : 10);
         const finalReps = sess.completedReps > 0 ? sess.completedReps : targetR;
+        const userRir = typeof sess.selectedRir === 'number' ? sess.selectedRir : 2;
+        const userForm = sess.selectedForm || 'CLEAN';
 
         // 1. Log real verified entry into persistent workout database and compute PRs
         const result = this.logExerciseSet(ex.id || 'ex_compound', ex.name, sess.weightKg, finalReps, sess.currentSet);
@@ -815,7 +888,7 @@ class JourneyEngine {
         // 2. Update active in-memory records array for graph visualization
         sess.records = this.getExercisePerformanceRecords(ex.id || 'ex_compound', 65);
 
-        // 3. Central Decision Engine Adaptive Overload Calculation
+        // 3. Central Decision Engine V3.6 Closed-Loop Adaptive Progression Calculation
         let decisionProgression = null;
         if (window.decisionEngine && window.decisionEngine.calculateExerciseProgression) {
             decisionProgression = window.decisionEngine.calculateExerciseProgression(
@@ -823,7 +896,9 @@ class JourneyEngine {
                 sess.weightKg,
                 targetR,
                 finalReps,
-                2
+                userRir,
+                userForm,
+                ex.name
             );
         }
 
@@ -837,12 +912,13 @@ class JourneyEngine {
             window.worldEngine.recordMentorTraining(sess.step.mentor, 1);
         }
 
-        // 5. Toast Feedback
+        // 5. Toast Feedback with genuine Progression decision
         let toastTitle = 'SET LOGGED & VERIFIED!';
-        let toastMsg = `Logged ${sess.weightKg} kg × ${finalReps} reps (Est. 1RM: ${result.est1RM} kg).`;
+        let nextTargetStr = decisionProgression ? ` Next Target: ${decisionProgression.nextWeightKg} kg × ${decisionProgression.nextTargetReps} reps.` : '';
+        let toastMsg = `Logged ${sess.weightKg} kg × ${finalReps} reps (RIR: ${userRir}, Form: ${userForm}).${nextTargetStr}`;
         if (result.isLoadPr) {
             toastTitle = '★ NEW LOAD PERSONAL BEST! ★';
-            toastMsg = `🔥 Surpassed previous load record with ${sess.weightKg} KG!`;
+            toastMsg = `🔥 Surpassed previous load record with ${sess.weightKg} KG!${nextTargetStr}`;
         }
 
         if (sess.currentSet < sess.totalSets) {
@@ -857,9 +933,15 @@ class JourneyEngine {
                 sess.currentSet = 1;
                 sess.completedReps = 0;
                 const nextEx = sess.step.exercises[sess.currentExIndex];
-                sess.weightKg = nextEx.weight || 45;
-                sess.prevWeightKg = nextEx.prevWeight || 40;
+
+                const sData = window.systemState ? window.systemState.data : null;
+                const nextAdaptiveTarget = (sData && sData.adaptiveExerciseTargets) ? sData.adaptiveExerciseTargets[nextEx.id] : null;
+
+                sess.weightKg = (nextAdaptiveTarget && typeof nextAdaptiveTarget.weightKg === 'number') ? nextAdaptiveTarget.weightKg : (nextEx.weight || 45);
+                sess.targetReps = (nextAdaptiveTarget && typeof nextAdaptiveTarget.reps === 'number') ? nextAdaptiveTarget.reps : (nextEx.reps || 10);
+                sess.prevWeightKg = (nextAdaptiveTarget && typeof nextEx.weight === 'number') ? nextEx.weight : (nextEx.prevWeight || 40);
                 sess.records = this.getExercisePerformanceRecords(nextEx.id || 'ex_compound', 35);
+
                 this.renderActiveSetModal();
                 if (window.app) window.app.showToast('EXERCISE MASTERED', `Advancing to ${nextEx.name}!`);
             } else {
@@ -878,7 +960,7 @@ class JourneyEngine {
 
                 if (window.systemAudio) window.systemAudio.playVictory();
                 if (window.app) {
-                    const nextTargetInfo = decisionProgression ? ` Next Target: ${decisionProgression.nextWeightKg} kg.` : '';
+                    const nextTargetInfo = decisionProgression ? ` Next Session Target: ${decisionProgression.nextWeightKg} kg × ${decisionProgression.nextTargetReps} reps.` : '';
                     window.app.showToast('⚔️ PHASE CONQUERED!', `🎉 ${sess.step.title} fully completed!${nextTargetInfo}`);
                     window.app.syncUI();
                 }

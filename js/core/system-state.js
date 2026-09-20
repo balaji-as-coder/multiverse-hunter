@@ -389,6 +389,12 @@ class MasterSystemState {
                 { id: 'rw_movie', title: 'Cinema / Binge Night Episode Block', cost: 500, icon: '🎬', desc: 'Weekend reward for finishing weekly Hunter Arc.' }
             ],
 
+            // CLOSED-LOOP ADAPTIVE EXERCISE TARGETS & PERSISTENT PROGRESSION (V3.6)
+            adaptiveExerciseTargets: {},
+            latestDecisionRecord: null,
+            decisionRecordHistory: [],
+            workoutHistory: [],
+
             activityLog: []
         };
     }
