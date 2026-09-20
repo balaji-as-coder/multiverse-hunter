@@ -1,0 +1,497 @@
+/* ==========================================================================
+   MULTIVERSE HUNTER — LIVING WORLD & CHARACTER INTERACTION STYLES (V3.1)
+   Brings the anime universe to life with dynamic environments, time cycles,
+   breathing meditation orbs, character encounters & evolution chamber.
+   ========================================================================== */
+
+/* ================= 1. LIVING WORLD STAGE ================= */
+.world-hub-stage {
+    position: relative;
+    border-radius: var(--card-radius);
+    background: radial-gradient(circle at 50% 25%, #15102a 0%, #090a0f 85%);
+    border: 1px solid var(--border-subtle);
+    overflow: hidden;
+    padding: 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+    margin-bottom: 25px;
+    transition: background 0.8s ease;
+}
+
+/* Time of Day Atmospheric Overlays */
+body.world-dawn .world-hub-stage {
+    background: radial-gradient(circle at 50% 25%, #2a1515 0%, #0c0810 85%);
+    border-color: rgba(245, 158, 11, 0.25);
+}
+body.world-day .world-hub-stage {
+    background: radial-gradient(circle at 50% 25%, #0e2038 0%, #07090e 85%);
+    border-color: rgba(56, 189, 248, 0.25);
+}
+body.world-dusk .world-hub-stage {
+    background: radial-gradient(circle at 50% 25%, #30121d 0%, #0d060a 85%);
+    border-color: rgba(239, 68, 68, 0.25);
+}
+body.world-night .world-hub-stage {
+    background: radial-gradient(circle at 50% 25%, #05142e 0%, #030408 85%);
+    border-color: rgba(139, 92, 246, 0.25);
+}
+
+/* Distant Mountain & Fog Parallax */
+.world-mountain-silhouette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(180deg, transparent 0%, rgba(5, 6, 10, 0.8) 70%, #05060a 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.world-fog-layer {
+    position: absolute;
+    bottom: 0;
+    left: -50%;
+    width: 200%;
+    height: 80px;
+    background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.08) 0%, transparent 70%);
+    animation: fogDrift 40s linear infinite alternate;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes fogDrift {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(25%); }
+}
+
+/* World Hub Header Bar */
+.world-top-strip {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.wts-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.world-time-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--pill-radius);
+    padding: 4px 10px;
+    font-family: var(--font-system);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.world-realms-nav {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-realm-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    border-radius: var(--pill-radius);
+    padding: 6px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--trans-fast);
+}
+.btn-realm-pill:hover, .btn-realm-pill.active {
+    background: var(--accent-primary-dim);
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+    box-shadow: 0 0 12px var(--accent-primary-dim);
+}
+
+/* ================= 2. CHARACTER ENCOUNTER & INTERACTION ================= */
+.world-character-stage {
+    position: relative;
+    z-index: 3;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 25px;
+    align-items: stretch;
+}
+
+@media (max-width: 900px) {
+    .world-character-stage {
+        grid-template-columns: 1fr;
+    }
+}
+
+.character-presence-card {
+    background: rgba(14, 16, 22, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--card-radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.character-avatar-frame {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #251b3d 0%, #11131c 100%);
+    border: 2px solid var(--accent-primary);
+    box-shadow: 0 0 25px var(--accent-primary-glow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+    margin-bottom: 12px;
+    animation: charHover 4s ease-in-out infinite;
+}
+
+@keyframes charHover {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.character-name-title {
+    font-family: var(--font-system);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.char-rel-pill {
+    margin-top: 6px;
+    font-family: var(--font-system);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--pill-radius);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.char-rel-pill.rel-lvl-1 { background: rgba(156, 163, 175, 0.15); color: #9ca3af; }
+.char-rel-pill.rel-lvl-2 { background: rgba(34, 197, 94, 0.15); color: #22c55e; border-color: rgba(34, 197, 94, 0.4); }
+.char-rel-pill.rel-lvl-3 { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); }
+.char-rel-pill.rel-lvl-4 { background: rgba(0, 242, 254, 0.15); color: #00f2fe; border-color: rgba(0, 242, 254, 0.4); }
+.char-rel-pill.rel-lvl-5 { background: rgba(139, 92, 246, 0.2); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.6); box-shadow: 0 0 12px rgba(139, 92, 246, 0.4); }
+
+.character-speech-bubble {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--card-radius);
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    font-style: italic;
+    margin-top: 15px;
+    width: 100%;
+}
+
+/* World Mission Container */
+.world-mission-card {
+    background: rgba(17, 19, 26, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--card-radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.wmc-tag {
+    font-family: var(--font-system);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.wmc-title {
+    font-family: var(--font-system);
+    font-size: 18px;
+    font-weight: 800;
+    margin-top: 4px;
+}
+
+.wmc-exercise-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.wmc-ex-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--pill-radius);
+    padding: 8px 14px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.wmc-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* ================= 3. DOMAIN MEDITATION MODAL ================= */
+.domain-meditation-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #020306;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    transition: opacity 0.4s ease;
+}
+
+.domain-meditation-backdrop.hidden {
+    display: none !important;
+}
+
+.domain-meditation-container {
+    position: relative;
+    max-width: 650px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 5;
+}
+
+.domain-cosmic-bg {
+    position: absolute;
+    inset: -100px;
+    background: radial-gradient(circle at 50% 50%, #071936 0%, #020306 70%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.domain-kanji-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: serif;
+    font-size: clamp(40px, 8vw, 100px);
+    font-weight: 900;
+    color: rgba(0, 242, 254, 0.05);
+    letter-spacing: 16px;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.btn-domain-exit {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-secondary);
+    border-radius: var(--pill-radius);
+    padding: 6px 12px;
+    font-size: 11px;
+    cursor: pointer;
+    z-index: 10;
+}
+.btn-domain-exit:hover {
+    color: #ffffff;
+    border-color: #ef4444;
+}
+
+.domain-badge {
+    font-family: var(--font-system);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+.domain-title {
+    font-family: var(--font-system);
+    font-size: clamp(16px, 3.5vw, 22px);
+    font-weight: 800;
+    margin-top: 8px;
+    line-height: 1.3;
+}
+.domain-guide-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* Kinetic Breathing Orb */
+.breathing-stage-wrap {
+    margin: 35px 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 6;
+}
+
+.breathing-kinetic-orb {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #ffffff 0%, #38bdf8 35%, #0284c7 70%, #03142e 100%);
+    box-shadow: 0 0 50px rgba(56, 189, 248, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 4s ease-in-out, box-shadow 4s ease-in-out;
+}
+
+.breathing-kinetic-orb.orb-inhale {
+    transform: scale(1.6);
+    box-shadow: 0 0 90px #00f2fe, 0 0 140px rgba(56, 189, 248, 0.7);
+}
+.breathing-kinetic-orb.orb-hold {
+    transform: scale(1.6);
+    box-shadow: 0 0 70px #8b5cf6, 0 0 100px rgba(139, 92, 246, 0.5);
+}
+.breathing-kinetic-orb.orb-exhale {
+    transform: scale(0.85);
+    box-shadow: 0 0 35px rgba(56, 189, 248, 0.3);
+}
+.breathing-kinetic-orb.orb-still {
+    transform: scale(0.85);
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+}
+
+.breathing-phase-label {
+    font-family: var(--font-system);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-top: 20px;
+    color: var(--accent-primary);
+}
+
+.domain-timer-digits {
+    font-family: var(--font-system);
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #ffffff;
+}
+
+/* ================= 4. HUNTER EVOLUTION CHAMBER ================= */
+.evolution-chamber-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--card-radius);
+    padding: 24px;
+}
+
+.hec-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 18px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.hec-heading {
+    font-family: var(--font-system);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+.hec-current-telemetry {
+    display: flex;
+    gap: 12px;
+}
+
+.hct-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--pill-radius);
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+}
+.hct-lbl { color: var(--text-muted); font-size: 10px; }
+
+.hec-timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+}
+
+.hec-stage-card {
+    background: rgba(18, 20, 28, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--card-radius);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: var(--trans-fast);
+}
+
+.hec-stage-card.current-active-evo {
+    background: rgba(25, 22, 38, 0.85);
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.35);
+}
+
+.hec-month-badge {
+    font-family: var(--font-system);
+    font-size: 10px;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: var(--pill-radius);
+}
+
+.hec-avatar-preview {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #090b12;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    margin: 0 auto;
+}
+
+.hec-stage-title {
+    font-family: var(--font-system);
+    font-size: 13px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.hec-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.hec-metric-lbl {
+    font-size: 10px;
+    color: var(--text-muted);
+    font-weight: 600;
+}

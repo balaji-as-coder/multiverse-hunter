@@ -1,0 +1,68 @@
+/* ==========================================================================
+   RADAR CHART & ATTRIBUTE PENTAGON STYLES
+   ========================================================================== */
+
+.radar-svg {
+    width: 100%;
+    height: 100%;
+    max-width: 280px;
+    max-height: 240px;
+    overflow: visible;
+}
+
+/* Radar Web Grid Lines */
+.radar-grid-polygon {
+    fill: rgba(0, 229, 255, 0.02);
+    stroke: rgba(0, 229, 255, 0.15);
+    stroke-width: 1;
+    transition: all 0.3s ease;
+}
+
+.radar-axis-line {
+    stroke: rgba(0, 229, 255, 0.2);
+    stroke-dasharray: 2, 3;
+    stroke-width: 1;
+}
+
+/* Dynamic Player Stat Polygon */
+.radar-stat-polygon {
+    fill: rgba(0, 229, 255, 0.25);
+    stroke: var(--cyan-glow, #00e5ff);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6));
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Stat Node Points */
+.radar-node-circle {
+    fill: #00e5ff;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    r: 4;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: drop-shadow(0 0 6px #00e5ff);
+}
+
+.radar-node-circle:hover {
+    r: 6;
+    fill: #ffffff;
+}
+
+/* Axis Labels */
+.radar-label {
+    fill: #94a3b8;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    text-anchor: middle;
+    letter-spacing: 1px;
+    transition: fill 0.2s ease;
+}
+
+.radar-label-val {
+    fill: #00e5ff;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 800;
+    text-anchor: middle;
+}

@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE SYSTEM | MULTIVERSE HUNTER — BODY ASCENSION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/system.css">
+    <link rel="stylesheet" href="css/cinematic.css">
+    <link rel="stylesheet" href="css/radar.css">
+    <link rel="stylesheet" href="css/world.css">
+</head>
+<body class="system-theme theme-shadow">
+    <!-- Ambient Particle Canvas -->
+    <canvas id="ambient-canvas"></canvas>
+    <canvas id="fx-canvas"></canvas>
+
+    <!-- Scanline & Hologram Overlay -->
+    <div class="holo-overlay"></div>
+    <div class="vignette"></div>
+
+    <!-- Atmospheric Floating Energy Orbs -->
+    <div class="orb-float orb-1"></div>
+    <div class="orb-float orb-2"></div>
+    <div class="orb-float orb-3"></div>
+
+    <!-- System Toast Container -->
+    <div id="system-toast-container" class="system-toast-container"></div>
+
+    <!-- Main Container -->
+    <div class="system-wrapper">
+        <!-- System Top Bar Header -->
+        <header class="system-header">
+            <div class="header-left">
+                <button id="btn-mobile-nav-toggle" class="btn-mobile-nav-toggle" aria-label="Toggle Navigation Menu">
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                    <span class="hamburger-bar"></span>
+                </button>
+                <div class="system-logo">
+                    <div class="system-badge">SYSTEM 3.0</div>
+                    <span class="system-title">MULTIVERSE HUNTER</span>
+                </div>
+                <div class="system-status-indicator">
+                    <span class="status-dot"></span>
+                    <span class="status-text">ADAPTIVE EVOLUTION // ONLINE</span>
+                </div>
+            </div>
+
+            <div class="header-center">
+                <!-- User Role Selector -->
+                <div class="role-selector-wrap">
+                    <select id="select-user-role" class="role-dropdown" title="Switch User Role & Permissions">
+                        <option value="HUNTER">👤 HUNTER MODE</option>
+                        <option value="COACH">🧑🏫 COACH MODE</option>
+                        <option value="ADMIN">👑 ADMIN MODE</option>
+                    </select>
+                </div>
+                
+                <!-- Quick Evidence, Audit & Safety Actions -->
+                <button id="btn-open-evidence-inspector" class="btn-tool-holo" title="Inspect Scientific Evidence & Clinical Guidelines">🔬 EVIDENCE</button>
+                <button id="btn-open-audit-trail" class="btn-tool-holo" title="View Decision Audit Trail & Plan Versions">📜 AUDIT</button>
+                <button id="btn-open-emergency-stop" class="btn-tool-danger" title="Safety Screening & Emergency Override">⚠ SAFETY</button>
+                <button id="btn-trigger-awakening" class="btn-tool-holo btn-glow-violet" title="Experience Gojo Six Eyes Limitless Awakening Cinematic">👁️ AWAKEN</button>
+
+                <div class="countdown-widget">
+                    <span class="timer-label">DAILY RESET:</span>
+                    <span id="daily-countdown" class="timer-value">12:30:45</span>
+                </div>
+            </div>
+
+            <div class="header-right">
+                <!-- Theme Mode Selector -->
+                <div class="theme-selector-wrap">
+                    <select id="select-theme-mode" class="role-dropdown" title="Visual Theme Mode">
+                        <option value="theme-shadow">🌑 SHADOW MONARCH</option>
+                        <option value="theme-aura">⚡ AURA OVERDRIVE</option>
+                        <option value="theme-battle">🔥 BATTLE DRIVE</option>
+                        <option value="theme-sage">🌿 SAGE ASCENSION</option>
+                    </select>
+                </div>
+
+                <button id="btn-audio-toggle" class="audio-btn" title="Toggle System Audio Engine">
+                    <span id="audio-icon">🔊</span>
+                    <span class="audio-label">SFX</span>
+                </button>
+                <div class="quick-hunter-info">
+                    <span class="rank-badge rank-e" id="header-rank-badge">E-RANK</span>
+                    <span class="hunter-name" id="header-player-name">Hunter Protagonist</span>
+                    <span class="hunter-lvl">Lv. <span id="header-player-level">1</span></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="system-main">
+            <!-- Navigation Sidebar / Tabs -->
+            <nav class="system-nav" id="system-nav">
+                <div class="system-nav-drawer-header mobile-only">
+                    <div class="snd-title">
+                        <span class="highlight-violet">◈</span> NAVIGATION
+                    </div>
+                    <button id="btn-close-mobile-nav" class="btn-close-drawer" aria-label="Close Navigation">✕</button>
+                </div>
+                <button class="nav-item active" data-tab="status-tab">
+                    <span class="nav-icon">◈</span>
+                    <span class="nav-text">DASHBOARD</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="profile-tab">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">MY HUNTER</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="training-tab">
+                    <span class="nav-icon">🏋️</span>
+                    <span class="nav-text">TRAINING (4 REALMS)</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="calisthenics-tab">
+                    <span class="nav-icon">🤸</span>
+                    <span class="nav-text">CALISTHENICS</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="nutrition-tab">
+                    <span class="nav-icon">🍱</span>
+                    <span class="nav-text">NUTRITION & MEALS</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="recovery-tab">
+                    <span class="nav-icon">❤️</span>
+                    <span class="nav-text">RECOVERY & READINESS</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="journal-tab">
+                    <span class="nav-icon">📖</span>
+                    <span class="nav-text">HUNTER JOURNAL</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="quests-tab">
+                    <span class="nav-icon">📜</span>
+                    <span class="nav-text">QUESTS & HABITS</span>
+                    <span class="nav-badge" id="quest-nav-badge">!</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="multiverse-tab">
+                    <span class="nav-icon">🌌</span>
+                    <span class="nav-text">MULTIVERSE & BOSSES</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="records-tab">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">PROGRESS & 30-DAY ARCS</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="clients-tab">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">COACH CLIENTS</span>
+                    <span class="nav-glow"></span>
+                </button>
+                <button class="nav-item" data-tab="shop-tab">
+                    <span class="nav-icon">⚖</span>
+                    <span class="nav-text">REWARDS & SHOP</span>
+                    <span class="nav-glow"></span>
+                </button>
+            </nav>
+            <div id="mobile-nav-backdrop" class="mobile-nav-backdrop"></div>
+
+            <!-- Tab Panels -->
+            <div class="system-content">
+                
+                <!-- ================= TAB 1: DASHBOARD ================= -->
+                <section id="status-tab" class="tab-panel active">
+                    <div class="hologram-window status-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ HUNTER ASCENSION DASHBOARD ]</h2>
+                            <div class="window-actions" style="display: flex; gap: 8px; align-items: center;">
+                                <button id="btn-replay-awakening" class="btn-secondary-holo btn-sm" title="Replay Anime Eye Opening Splash Cinematic">⚡ AWAKENING CINEMATIC</button>
+                                <button class="btn-secondary-holo btn-sm btn-trigger-domain-expansion" data-mentor="Gojo Satoru" data-skill="LIMITLESS FOCUS" title="Test Cinematic Domain Expansion">👁 DOMAIN EXPANSION</button>
+                                <span id="status-active-phase-badge" class="system-code">PHASE: FOUNDATION</span>
+                            </div>
+                        </div>
+
+                        <!-- ================= LIVING ANIME WORLD HUB STAGE ================= -->
+                        <div class="world-hub-stage" id="world-ambient-stage">
+                            <div class="world-fog-layer"></div>
+                            <div class="world-mountain-silhouette"></div>
+
+                            <div class="world-top-strip">
+                                <div class="wts-left">
+                                    <span class="world-time-pill" id="world-time-pill">🌅 DAWN</span>
+                                    <span class="system-title font-13" id="world-current-realm-name">HIDDEN LEAF GROUNDS</span>
+                                    <span class="rank-badge" id="world-realm-badge">🥋 DISCIPLINE</span>
+                                </div>
+                                <div class="world-realms-nav">
+                                    <button class="btn-realm-pill active" data-realm="ninja_realm">🥋 Ninja Valley</button>
+                                    <button class="btn-realm-pill" data-realm="shadow">👑 Shadow Citadel</button>
+                                    <button class="btn-realm-pill" data-realm="grand_line">⚔️ Grand Line</button>
+                                    <button class="btn-realm-pill" data-realm="jujutsu_void">🌌 Infinite Void</button>
+                                    <button class="btn-realm-pill" data-realm="dragon_domain">🔥 Gravity Chamber</button>
+                                </div>
+                            </div>
+
+                            <!-- Active Character Arrival & Real Training Challenge -->
+                            <div class="world-character-stage">
+                                <div class="character-presence-card">
+                                    <div class="character-avatar-frame" id="world-character-avatar">🥊</div>
+                                    <h3 class="character-name-title" id="world-character-name">ROCK LEE</h3>
+                                    <span class="char-rel-pill rel-lvl-1" id="world-character-rel-badge">FIRST MEETING (Lvl 1)</span>
+                                    <div class="character-speech-bubble" id="world-character-speech">
+                                        “You came. Good! Today, we forge unbreakable discipline through bodyweight repetition!”
+                                    </div>
+                                </div>
+
+                                <div class="world-mission-card" id="world-mission-card">
+                                    <!-- Populated by WorldEngine -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Readiness Status Alert Box -->
+                        <div class="dashboard-readiness-banner">
+                            <div class="dr-left">
+                                <span id="dashboard-readiness-pill" class="readiness-badge badge-green">GREEN READINESS</span>
+                                <span id="dashboard-readiness-msg" class="dr-msg">Normal planned training. System physiology balanced.</span>
+                            </div>
+                            <button id="btn-open-morning-check" class="btn-secondary-holo btn-sm">🌅 MORNING SYSTEM CHECK</button>
+                        </div>
+
+                        <!-- Multi-Level Master Hierarchy Strip -->
+                        <div class="master-level-strip">
+                            <div class="mls-card main-hunter-mls">
+                                <span class="mls-label">TOTAL HUNTER LEVEL (70% Body + 30% Life)</span>
+                                <strong id="status-hunter-level" class="mls-val highlight-cyan">1</strong>
+                                <span class="mls-sub">Rank: E-Rank Initiate</span>
+                            </div>
+                            <div class="mls-card">
+                                <span class="mls-label">🏋️ BODY LEVEL (Body+Nut+Rec+Disc)</span>
+                                <strong id="status-body-level" class="mls-val highlight-green">Lv. 1</strong>
+                                <span class="mls-sub">Physical Evolution</span>
+                            </div>
+                            <div class="mls-card">
+                                <span class="mls-label">🧠 LIFE LEVEL (Mind+Business)</span>
+                                <strong id="status-life-level" class="mls-val highlight-purple">Lv. 1</strong>
+                                <span class="mls-sub">Cognitive & Career</span>
+                            </div>
+                        </div>
+
+                        <!-- Central Decision Engine Directive & Override Bar -->
+                        <div class="decision-override-bar mt-15">
+                            <div class="dob-left">
+                                <span class="dob-title">⚡ DAILY ADAPTIVE PROTOCOL</span>
+                                <button id="btn-show-plan-explainer" class="btn-link-cyan">❓ Why was this plan generated?</button>
+                            </div>
+                            <div class="dob-actions">
+                                <button id="btn-accept-daily-plan" class="btn-sm btn-primary-holo">✓ ACCEPT</button>
+                                <button id="btn-modify-daily-plan" class="btn-sm btn-secondary-holo">✎ MODIFY</button>
+                                <button id="btn-substitute-daily-plan" class="btn-sm btn-secondary-holo">🔄 SUBSTITUTE</button>
+                                <button id="btn-skip-daily-plan" class="btn-sm btn-secondary-holo">⏭ SKIP</button>
+                                <button id="btn-pause-daily-plan" class="btn-sm btn-secondary-holo">⏸ PAUSE</button>
+                            </div>
+                        </div>
+
+                        <div class="status-grid mt-20">
+                            <!-- Left: Protagonist Profile & 6 XP Tracks -->
+                            <div class="status-col-left">
+                                <div class="hunter-card">
+                                    <div class="hunter-avatar-wrap">
+                                        <div class="avatar-aura" id="hunter-avatar-aura"></div>
+                                        <div class="hunter-avatar">
+                                            <div class="avatar-silhouette" id="hunter-avatar-icon">👤</div>
+                                            <div class="avatar-eye-glow"></div>
+                                        </div>
+                                        <span class="rank-indicator-overlay" id="status-rank-pill">E-RANK</span>
+                                    </div>
+                                    <div class="hunter-details">
+                                        <div class="editable-name-wrap">
+                                            <input type="text" id="input-player-name" class="name-input" value="Hunter" maxlength="24">
+                                            <span class="edit-hint">✎</span>
+                                        </div>
+                                        <div class="hunter-title" id="status-player-title">Awakened Initiate</div>
+                                        <div class="hunter-job" id="status-player-job">Job: None (Unawakened)</div>
+                                        <div class="hunter-evolution-badge font-10 mt-4 highlight-violet" id="status-avatar-stage">STAGE I: AWAKENED</div>
+                                    </div>
+                                </div>
+
+                                <!-- 6 Independent XP Tracks -->
+                                <div class="xp-6-tracks-container mt-15">
+                                    <h4 class="section-subtitle">[ 6 REAL-LIFE XP PROGRESSION TRACKS ]</h4>
+                                    
+                                    <div class="xp-track-item">
+                                        <div class="xt-meta"><span>🏋️ BODY XP</span><span id="track-lvl-bodyXp">Lv. 1</span><span id="track-txt-bodyXp">0 / 100 XP</span></div>
+                                        <div class="bar-shell"><div id="track-bar-bodyXp" class="bar-fill" style="width: 0%; background: #00e5ff;"></div></div>
+                                    </div>
+                                    <div class="xp-track-item">
+                                        <div class="xt-meta"><span>🍱 NUTRITION XP</span><span id="track-lvl-nutritionXp">Lv. 1</span><span id="track-txt-nutritionXp">0 / 100 XP</span></div>
+                                        <div class="bar-shell"><div id="track-bar-nutritionXp" class="bar-fill" style="width: 0%; background: #10b981;"></div></div>
+                                    </div>
+                                    <div class="xp-track-item">
+                                        <div class="xt-meta"><span>❤️ RECOVERY XP</span><span id="track-lvl-recoveryXp">Lv. 1</span><span id="track-txt-recoveryXp">0 / 100 XP</span></div>
+                                        <div class="bar-shell"><div id="track-bar-recoveryXp" class="bar-fill" style="width: 0%; background: #38bdf8;"></div></div>
+                                    </div>
+                                    <div class="xp-track-item">
+                                        <div class="xt-meta"><span>🔥 DISCIPLINE XP</span><span id="track-lvl-disciplineXp">Lv. 1</span><span id="track-txt-disciplineXp">0 / 100 XP</span></div>
+                                        <div class="bar-shell"><div id="track-bar-disciplineXp" class="bar-fill" style="width: 0%; background: #f59e0b;"></div></div>
+                                    </div>
+                                    <div class="xp-track-item">
+                                        <div class="xt-meta"><span>🧠 MIND / LEARNING XP</span><span id="track-lvl-mindXp">Lv. 1</span><span id="track-txt-mindXp">0 / 100 XP</span></div>
+                                        <div class="bar-shell"><div id="track-bar-mindXp" class="bar-fill" style="width: 0%; background: #a855f7;"></div></div>
+                                    </div>
+                                    <div class="xp-track-item">
+                                        <div class="xt-meta"><span>💼 BUSINESS XP</span><span id="track-lvl-businessXp">Lv. 1</span><span id="track-txt-businessXp">0 / 100 XP</span></div>
+                                        <div class="bar-shell"><div id="track-bar-businessXp" class="bar-fill" style="width: 0%; background: #ec4899;"></div></div>
+                                    </div>
+                                </div>
+
+                                <!-- Currencies -->
+                                <div class="currency-row mt-15">
+                                    <div class="currency-card gold-card">
+                                        <span class="curr-icon">🪙</span>
+                                        <div class="curr-info">
+                                            <span class="curr-title">GOLD</span>
+                                            <span id="status-gold" class="curr-amount">250</span>
+                                        </div>
+                                    </div>
+                                    <div class="currency-card crystal-card">
+                                        <span class="curr-icon">💎</span>
+                                        <div class="curr-info">
+                                            <span class="curr-title">MANA CRYSTALS</span>
+                                            <span id="status-crystals" class="curr-amount">15</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right: 8 Core Stats & Radar Chart -->
+                            <div class="status-col-right">
+                                <div class="stat-points-header">
+                                    <div class="stat-points-info">
+                                        <span class="pts-label">AVAILABLE STAT POINTS:</span>
+                                        <span id="status-unallocated-pts" class="pts-value glow-pulse">5</span>
+                                    </div>
+                                    <button id="btn-auto-assign" class="btn-secondary-holo btn-sm">AUTO ASSIGN</button>
+                                </div>
+
+                                <!-- 8 Core Stats Grid -->
+                                <div class="stats-8-grid">
+                                    <div class="stat-card" data-stat="str">
+                                        <div class="stat-info"><span class="stat-name">STR (Strength)</span><span id="stat-val-str" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="str">+</button>
+                                    </div>
+                                    <div class="stat-card" data-stat="agi">
+                                        <div class="stat-info"><span class="stat-name">AGI (Cardio / Agility)</span><span id="stat-val-agi" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="agi">+</button>
+                                    </div>
+                                    <div class="stat-card" data-stat="vit">
+                                        <div class="stat-info"><span class="stat-name">VIT (Vitality / Stamina)</span><span id="stat-val-vit" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="vit">+</button>
+                                    </div>
+                                    <div class="stat-card" data-stat="int">
+                                        <div class="stat-info"><span class="stat-name">INT (Coding / Study)</span><span id="stat-val-int" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="int">+</button>
+                                    </div>
+                                    <div class="stat-card" data-stat="focus">
+                                        <div class="stat-info"><span class="stat-name">FOCUS (Deep Work)</span><span id="stat-val-focus" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="focus">+</button>
+                                    </div>
+                                    <div class="stat-card" data-stat="will">
+                                        <div class="stat-info"><span class="stat-name">WILL (Discipline)</span><span id="stat-val-will" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="will">+</button>
+                                    </div>
+                                    <div class="stat-card" data-stat="energy">
+                                        <div class="stat-info"><span class="stat-name">ENERGY (Vitality)</span><span id="stat-val-energy" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="energy">+</button>
+                                    </div>
+                                    <div class="stat-card" data-stat="biz">
+                                        <div class="stat-info"><span class="stat-name">BIZ (Career / CRM)</span><span id="stat-val-biz" class="stat-num">10</span></div>
+                                        <button class="btn-stat-add" data-stat="biz">+</button>
+                                    </div>
+                                </div>
+
+                                <!-- 8-Attribute Radar Chart -->
+                                <div class="radar-section">
+                                    <div class="section-subtitle">[ ATTRIBUTE WEB ]</div>
+                                    <div id="status-radar-container" class="radar-box"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 2: MY HUNTER (PROTAGONIST PROFILE) ================= -->
+                <section id="profile-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ PROTAGONIST PROFILE & BODY PERFORMANCE METRICS ]</h2>
+                            <button id="btn-reassess-profile" class="btn-secondary-holo btn-sm">⚡ RE-RUN AWAKENING ASSESSMENT</button>
+                        </div>
+
+                        <div class="profile-dashboard-grid">
+                            <!-- Performance Measurements -->
+                            <div class="profile-card">
+                                <h3 class="card-head-title">PHYSICAL PERFORMANCE PRs</h3>
+                                <p class="card-sub-desc">Real physical progression proving body recomposition.</p>
+                                <div class="body-levels-grid">
+                                    <div class="bl-badge"><span class="bl-name">MAX PUSH-UPS</span><strong class="highlight-cyan">26 Reps</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">STRICT PULL-UPS</span><strong class="highlight-cyan">6 Reps</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">PLANK HOLD</span><strong class="highlight-cyan">65 Sec</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">5KM RUN PACE</span><strong class="highlight-cyan">5:40 /km</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">BENCH PRESS</span><strong class="highlight-cyan">65 kg</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">BARBELL SQUAT</span><strong class="highlight-cyan">75 kg</strong></div>
+                                </div>
+                            </div>
+
+                            <!-- Recovery Measurements -->
+                            <div class="profile-card">
+                                <h3 class="card-head-title">AUTONOMIC RECOVERY METRICS</h3>
+                                <div class="body-levels-grid">
+                                    <div class="bl-badge"><span class="bl-name">AVG SLEEP</span><strong class="highlight-green">7.3 hrs</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">RESTING HR</span><strong class="highlight-green">64 bpm</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">HRV SCORE</span><strong class="highlight-green">62 ms</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">READINESS</span><strong class="highlight-green">GREEN</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">STREAK</span><strong class="highlight-green">14 Days</strong></div>
+                                    <div class="bl-badge"><span class="bl-name">HEALTH INDEX</span><strong class="highlight-green">86 / 100</strong></div>
+                                </div>
+                            </div>
+
+                            <!-- Biometric Measurements -->
+                            <div class="profile-card full-span">
+                                <div class="card-header-flex">
+                                    <h3 class="card-head-title">CURRENT BIOMETRIC METRICS</h3>
+                                    <button id="btn-open-log-measurement" class="btn-primary-holo btn-sm">+ LOG NEW MEASUREMENT DELTA</button>
+                                </div>
+                                <div class="measurements-grid">
+                                    <div class="meas-item"><span class="m-label">WEIGHT</span><span class="m-val">78.0 kg</span><span class="m-target">Target: 72.0 kg</span></div>
+                                    <div class="meas-item"><span class="m-label">WAIST</span><span class="m-val">88.0 cm</span><span class="m-target">Target: 80.0 cm</span></div>
+                                    <div class="meas-item"><span class="m-label">CHEST</span><span class="m-val">98.0 cm</span><span class="m-target">Upper Clavicular</span></div>
+                                    <div class="meas-item"><span class="m-label">SHOULDER</span><span class="m-val">112.0 cm</span><span class="m-target">Lateral Delts</span></div>
+                                    <div class="meas-item"><span class="m-label">ARMS</span><span class="m-val">33.0 cm</span><span class="m-target">Flexed</span></div>
+                                    <div class="meas-item"><span class="m-label">THIGHS</span><span class="m-val">56.0 cm</span><span class="m-target">Quad Girth</span></div>
+                                </div>
+                            </div>
+
+                            <!-- Hunter Evolution Chamber -->
+                            <div id="evolution-chamber-container" class="full-span mt-20"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 3: TRAINING (4 REALMS) ================= -->
+                <section id="training-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ TRAINING ENGINE — 4 REALMS & EXERCISE SUBSTITUTION ]</h2>
+                            <button id="btn-swap-gym-home" class="btn-secondary-holo btn-sm">🔄 SWAP GYM ➔ HOME ALTERNATIVE</button>
+                        </div>
+
+                        <!-- 4 Realms Nav Bar -->
+                        <div class="training-realms-nav">
+                            <button class="training-realm-tab active" data-realm="gym">🏋️ 1. GYM REALM</button>
+                            <button class="training-realm-tab" data-realm="home">🏠 2. HOME REALM</button>
+                            <button class="training-realm-tab" data-realm="ground">🌳 3. GROUND / OUTDOOR</button>
+                            <button class="training-realm-tab" data-realm="calisthenics">🤸 4. CALISTHENICS</button>
+                        </div>
+
+                        <!-- Realm View Panels -->
+                        <div class="realm-view-container">
+                            <div class="realm-view-panel" data-realm="gym">
+                                <div class="realm-header-card">
+                                    <div class="rh-title">TODAY'S SCHEDULED GYM PROTOCOL: UPPER BODY (V-TAPER)</div>
+                                    <p class="rh-desc">Focus: Lateral Delt Expansion, Lat Pulldown Hypertrophy & Incline Upper Chest.</p>
+                                </div>
+                                <div class="exercise-cards-list">
+                                    <div class="ex-card">
+                                        <div class="ex-info">
+                                            <h4 class="ex-name">Lat Pulldown (Wide Grip)</h4>
+                                            <span class="ex-target">Pattern: Pull Vertical | RIR: 2 | Load: 45 kg</span>
+                                        </div>
+                                        <div class="ex-actions-wrap">
+                                            <div class="ex-sets-box">4 Sets × 8-12 Reps</div>
+                                            <button class="btn-substitute-exercise" data-exercise-id="ex_lat_pulldown">🔄 SUBSTITUTE</button>
+                                        </div>
+                                    </div>
+                                    <div class="ex-card">
+                                        <div class="ex-info">
+                                            <h4 class="ex-name">Dumbbell Overhead Shoulder Press</h4>
+                                            <span class="ex-target">Pattern: Push Vertical | RIR: 1 | Load: 16 kg/hand</span>
+                                        </div>
+                                        <div class="ex-actions-wrap">
+                                            <div class="ex-sets-box">4 Sets × 8-10 Reps</div>
+                                            <button class="btn-substitute-exercise" data-exercise-id="ex_db_overhead_press">🔄 SUBSTITUTE</button>
+                                        </div>
+                                    </div>
+                                    <div class="ex-card">
+                                        <div class="ex-info">
+                                            <h4 class="ex-name">Incline Dumbbell Chest Press</h4>
+                                            <span class="ex-target">Pattern: Push Horizontal | RIR: 2 | Load: 20 kg/hand</span>
+                                        </div>
+                                        <div class="ex-actions-wrap">
+                                            <div class="ex-sets-box">3 Sets × 8-12 Reps</div>
+                                            <button class="btn-substitute-exercise" data-exercise-id="ex_incline_db_press">🔄 SUBSTITUTE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="btn-complete-workout" class="btn-primary-holo btn-wide mt-20">✓ CLEAR TODAY'S WORKOUT (+350 BODY XP, +1 STR, +1 VIT)</button>
+                            </div>
+
+                            <div class="realm-view-panel hidden" data-realm="home">
+                                <div class="realm-header-card">
+                                    <div class="rh-title">HOME REALM: DUMBBELL & BODYWEIGHT HYBRID</div>
+                                    <p class="rh-desc">Full biomechanical tension without gym machines.</p>
+                                </div>
+                                <div class="exercise-cards-list">
+                                    <div class="ex-card"><div class="ex-info"><h4 class="ex-name">Standard Hollow-Body Push-ups</h4><span class="ex-target">Strict hollow core</span></div><div class="ex-sets-box">4 Sets × 15 Reps</div></div>
+                                    <div class="ex-card"><div class="ex-info"><h4 class="ex-name">Dumbbell Goblet Squats</h4><span class="ex-target">Quads & Core Brace</span></div><div class="ex-sets-box">4 Sets × 12 Reps</div></div>
+                                    <div class="ex-card"><div class="ex-info"><h4 class="ex-name">Single-Arm Dumbbell Row</h4><span class="ex-target">Lats & Rhomboids</span></div><div class="ex-sets-box">4 Sets × 12 Reps</div></div>
+                                </div>
+                            </div>
+
+                            <div class="realm-view-panel hidden" data-realm="ground">
+                                <div class="realm-header-card">
+                                    <div class="rh-title">GROUND REALM: RUNNING & AGILITY CIRCUITS</div>
+                                    <p class="rh-desc">Cardiovascular endurance, interval sprints, and outdoor conditioning.</p>
+                                </div>
+                                <div class="ground-metrics-grid">
+                                    <div class="gm-card"><span class="gm-label">TODAY'S TARGET</span><span class="gm-val">3.5 km Interval Run</span></div>
+                                    <div class="gm-card"><span class="gm-label">ESTIMATED PACE</span><span class="gm-val">5:45 min / km</span></div>
+                                    <div class="gm-card"><span class="gm-label">ESTIMATED XP</span><span class="gm-val">+250 AGI XP</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Weekly Schedule Overview -->
+                        <div class="weekly-schedule-box mt-30">
+                            <h3 class="card-head-title">[ 7-DAY HUNTER TRAINING ARC SCHEDULE ]</h3>
+                            <div id="weekly-training-schedule" class="schedule-list"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 4: CALISTHENICS ================= -->
+                <section id="calisthenics-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ CALISTHENICS MASTER PROGRESSION TREE ]</h2>
+                            <span class="system-code">STRICT PHYSICAL PREREQUISITES</span>
+                        </div>
+                        <p class="tab-intro-text">Master progression tiers through proven physical capability tests rather than arbitrary level milestones.</p>
+
+                        <!-- Calisthenics Tree Container -->
+                        <div id="calisthenics-tree-container" class="calisthenics-tree-grid"></div>
+
+                        <!-- Advanced Legendary Skills -->
+                        <div class="advanced-skills-section mt-30">
+                            <h3 class="card-head-title">[ LEGENDARY MASTERY SKILLS ]</h3>
+                            <div class="skills-mastery-grid">
+                                <div class="skill-mastery-card" data-skill-id="handstand">
+                                    <div class="sm-head"><span class="sm-icon">🤸</span><h4 class="sm-name">Handstand Mastery</h4></div>
+                                    <p class="sm-req">Req: Push Tier 4 + 45s Pike Hold</p>
+                                    <div class="sm-prog-bar"><div class="sm-prog-fill" style="width: 35%"></div></div>
+                                    <span class="sm-prog-text">Progress: 35%</span>
+                                </div>
+                                <div class="skill-mastery-card" data-skill-id="lsit">
+                                    <div class="sm-head"><span class="sm-icon">⚡</span><h4 class="sm-name">Strict L-Sit</h4></div>
+                                    <p class="sm-req">Req: Core Tier 3 + Dead Hang 45s</p>
+                                    <div class="sm-prog-bar"><div class="sm-prog-fill" style="width: 40%"></div></div>
+                                    <span class="sm-prog-text">Progress: 40%</span>
+                                </div>
+                                <div class="skill-mastery-card" data-skill-id="muscleup">
+                                    <div class="sm-head"><span class="sm-icon">👑</span><h4 class="sm-name">Bar Muscle-Up</h4></div>
+                                    <p class="sm-req">Req: 10 Strict Pull-ups + 15 Dips</p>
+                                    <div class="sm-prog-bar"><div class="sm-prog-fill" style="width: 15%"></div></div>
+                                    <span class="sm-prog-text">Progress: 15%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 5: NUTRITION & MEALS ================= -->
+                <section id="nutrition-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ ICMR INDIAN NUTRITION & ADAPTIVE TDEE ]</h2>
+                            <div class="nut-header-actions">
+                                <button id="btn-open-available-ingredients" class="btn-primary-holo btn-sm">🥘 WHAT'S AVAILABLE TODAY?</button>
+                            </div>
+                        </div>
+
+                        <!-- Adaptive TDEE & Maintenance Intelligence Strip -->
+                        <div class="tdee-intelligence-banner">
+                            <div class="ti-item">
+                                <span class="ti-label">ESTIMATED MAINTENANCE:</span>
+                                <strong id="tdee-maintenance-val" class="highlight-cyan">2350 kcal</strong>
+                            </div>
+                            <div class="ti-item">
+                                <span class="ti-label">7-DAY ROLLING WEIGHT:</span>
+                                <strong id="tdee-rolling-weight" class="highlight-green">78.2 kg (-0.45 kg/wk)</strong>
+                            </div>
+                            <div class="ti-item">
+                                <span class="ti-label">CONFIDENCE SCORE:</span>
+                                <span id="tdee-confidence-val" class="ti-conf">Moderate (2 weeks data)</span>
+                            </div>
+                        </div>
+
+                        <!-- Macro Totals Row -->
+                        <div class="nutrition-macro-bars-grid mt-15">
+                            <div class="macro-card">
+                                <div class="mc-head"><span>CALORIES</span><strong id="nut-cal-cur">1250</strong> / <span id="nut-cal-target">2100</span> kcal</div>
+                                <div class="bar-shell"><div id="nut-cal-bar" class="bar-fill" style="width: 58%; background: #00e5ff;"></div></div>
+                            </div>
+                            <div class="macro-card">
+                                <div class="mc-head"><span>PROTEIN</span><strong id="nut-prot-cur">92g</strong> / <span id="nut-prot-target">145g</span></div>
+                                <div class="bar-shell"><div id="nut-prot-bar" class="bar-fill" style="width: 63%; background: #10b981;"></div></div>
+                            </div>
+                            <div class="macro-card">
+                                <div class="mc-head">
+                                    <span>HYDRATION</span>
+                                    <div><strong id="nut-water-cur">2.0L</strong> / <span id="nut-water-target">3.2L</span></div>
+                                </div>
+                                <div class="bar-shell"><div id="nut-water-bar" class="bar-fill" style="width: 62%; background: #38bdf8;"></div></div>
+                                <div class="water-actions mt-10">
+                                    <button id="btn-add-water" class="btn-primary-holo btn-sm">+250ml</button>
+                                    <button id="btn-configure-water" class="btn-secondary-holo btn-sm">⚙ SET TARGET</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Today's Meals List with 1-Click Food Swap -->
+                        <div class="daily-meals-section mt-30">
+                            <div class="card-header-flex">
+                                <h3 class="card-head-title">[ TODAY'S MEAL SCHEDULE & CLOSEST NUTRITIONAL SWAP ]</h3>
+                                <div class="meal-freq-toggles">
+                                    <span>MEAL SPLIT:</span>
+                                    <button class="meal-freq-btn" data-freq="2">2 MEALS</button>
+                                    <button class="meal-freq-btn active" data-freq="3">3 MEALS</button>
+                                    <button class="meal-freq-btn" data-freq="4">4 MEALS</button>
+                                </div>
+                            </div>
+                            <p class="tab-intro-text">Click <strong>🔄 SWAP</strong> to substitute any food item with its closest nutritional match within a strict ±15% macro tolerance range.</p>
+                            <div id="nutrition-meals-container" class="meals-list-grid"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 6: RECOVERY & READINESS ================= -->
+                <section id="recovery-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ RECOVERY ENGINE & HEALTH INDEX ]</h2>
+                            <button class="btn-primary-holo btn-sm" onclick="document.getElementById('modal-morning-check').classList.remove('hidden')">🌅 LOG MORNING CHECK-IN</button>
+                        </div>
+
+                        <div class="recovery-dashboard-grid">
+                            <!-- 5 Pillars Breakdown -->
+                            <div class="recovery-card">
+                                <h3 class="card-head-title">HUNTER HEALTH INDEX (5 PILLARS)</h3>
+                                <div class="pillars-list">
+                                    <div class="pillar-row"><span>MOVEMENT & STEPS</span><strong class="highlight-cyan">88 / 100</strong></div>
+                                    <div class="pillar-row"><span>STRENGTH OVERLOAD</span><strong class="highlight-cyan">82 / 100</strong></div>
+                                    <div class="pillar-row"><span>AUTONOMIC RECOVERY</span><strong class="highlight-cyan">85 / 100</strong></div>
+                                    <div class="pillar-row"><span>NUTRITION ADHERENCE</span><strong class="highlight-cyan">80 / 100</strong></div>
+                                    <div class="pillar-row"><span>STREAK & CONSISTENCY</span><strong class="highlight-cyan">86 / 100</strong></div>
+                                </div>
+                            </div>
+
+                            <!-- Non-Diagnostic Safety Disclaimer -->
+                            <div class="recovery-card">
+                                <h3 class="card-head-title">SAFETY SAFEGUARDS & EVIDENCE POLICY</h3>
+                                <div class="safety-box">
+                                    <span class="safe-icon">🛡</span>
+                                    <p>The System uses non-diagnostic biological readiness checks to intelligently scale volume. It never interprets questionnaires as medical clearance and never encourages pushing through acute pain or severe joint discomfort.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 7: HUNTER JOURNAL ================= -->
+                <section id="journal-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ 📖 DAILY HUNTER JOURNAL & CHRONICLES ]</h2>
+                            <button id="btn-open-hunter-journal" class="btn-primary-holo btn-sm">+ LOG DAILY REFLECTION</button>
+                        </div>
+                        <p class="tab-intro-text">Track your daily accomplishments, lessons learned, and tomorrow's #1 priority. Archived into your permanent 30-day transformation chronicle.</p>
+                        <div id="journal-entries-container" class="journal-entries-grid mt-20"></div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 8: QUESTS & HABITS ================= -->
+                <section id="quests-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ DAILY HUNTER QUESTS & HABITS ]</h2>
+                            <button id="btn-open-create-quest" class="btn-primary-holo btn-sm">+ REGISTER CUSTOM QUEST</button>
+                        </div>
+                        <div id="daily-quests-container" class="quests-grid-container"></div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 9: MULTIVERSE & BOSSES ================= -->
+                <section id="multiverse-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ MULTIVERSE GATES & FOCUS BOSS RAIDS ]</h2>
+                            <span class="system-code">REAL LIFE = THE GAME // YOU = MAIN CHARACTER</span>
+                        </div>
+
+                        <!-- JJKdle-Style Daily Hunter Character Guess Challenge -->
+                        <div class="hunterdle-banner-card mb-25">
+                            <div class="hunterdle-left">
+                                <div class="hunterdle-badge">🎯 DAILY MINIGAME // HUNTERDLE</div>
+                                <h3 class="hunterdle-title">GUESS TODAY'S SECRET MULTIVERSE HUNTER</h3>
+                                <p class="hunterdle-desc font-12 text-secondary">Identify the secret mentor using clue hints (Universe, Combat Roles & Signature Quote) to claim +300 Mind XP & 150 Gold.</p>
+                            </div>
+                            <div class="hunterdle-right">
+                                <button id="btn-play-hunterdle" class="btn-primary-holo btn-sm">🎮 PLAY HUNTERDLE</button>
+                            </div>
+                        </div>
+
+                        <!-- Hunterdle Modal -->
+                        <div id="modal-hunterdle" class="system-modal-backdrop hidden">
+                            <div class="modal-hologram form-holo hunterdle-modal-box">
+                                <div class="window-header">
+                                    <h3 class="window-title">[ 🎯 HUNTERDLE: GUESS THE CHARACTER ]</h3>
+                                    <button class="modal-close-x" onclick="document.getElementById('modal-hunterdle').classList.add('hidden')">✕</button>
+                                </div>
+                                <div class="hunterdle-game-body mt-15">
+                                    <div class="hunterdle-clue-box">
+                                        <div class="h-clue-row">
+                                            <span class="h-clue-lbl">DIMENSION / UNIVERSE:</span>
+                                            <strong id="hunterdle-clue-universe" class="highlight-cyan">???</strong>
+                                        </div>
+                                        <div class="h-clue-row mt-6">
+                                            <span class="h-clue-lbl">COMBAT CLASSIFICATION:</span>
+                                            <span id="hunterdle-clue-roles" class="highlight-violet font-11">???</span>
+                                        </div>
+                                        <div class="h-clue-row mt-6">
+                                            <span class="h-clue-lbl">SIGNATURE PHILOSOPHY / QUOTE:</span>
+                                            <p id="hunterdle-clue-quote" class="italic text-secondary font-12 mt-2">"???"</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="hunterdle-input-wrap mt-20">
+                                        <label class="font-11 text-muted">SELECT YOUR GUESS:</label>
+                                        <div class="hunterdle-select-row mt-5" style="display:flex; gap:8px;">
+                                            <select id="select-hunterdle-guess" class="input-holo" style="flex:1;">
+                                                <option value="">-- Choose Character --</option>
+                                            </select>
+                                            <button id="btn-submit-hunterdle-guess" class="btn-primary-holo">SUBMIT GUESS</button>
+                                        </div>
+                                    </div>
+
+                                    <div id="hunterdle-result-box" class="hunterdle-result-box mt-20 hidden"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Multiverse Legion -->
+                        <div class="mentors-section">
+                            <h3 class="card-head-title">[ MULTIVERSE HUNTER LEGION ]</h3>
+                            <p class="tab-intro-text">Summon and assign mentors to activate challenge XP modifiers. Characters belong to multiple combat & mental classifications.</p>
+                            
+                            <!-- Legion Filter Bar -->
+                            <div class="legion-filters-bar mt-15 mb-20">
+                                <button class="btn-legion-filter active" data-filter="ALL">ALL LEGION (40)</button>
+                                <button class="btn-legion-filter" data-filter="monarch-supreme">👑 MONARCH / SUPREME</button>
+                                <button class="btn-legion-filter" data-filter="discipline-training">🥋 DISCIPLINE / TRAINING</button>
+                                <button class="btn-legion-filter" data-filter="warrior">⚔️ WARRIOR</button>
+                                <button class="btn-legion-filter" data-filter="strategist">🧠 STRATEGIST</button>
+                                <button class="btn-legion-filter" data-filter="willpower">🔥 WILLPOWER</button>
+                                <button class="btn-legion-filter" data-filter="bosses">👹 BOSSES</button>
+                            </div>
+
+                            <div id="multiverse-mentors-container" class="legion-grid"></div>
+                        </div>
+
+                        <!-- Progressive Boss Raids & Stage Gates -->
+                        <div class="boss-raids-section mt-30">
+                            <div class="card-header-flex">
+                                <h3 class="card-head-title">[ MULTIVERSE STAGE GATES & PROGRESSIVE BOSS RAIDS ]</h3>
+                                <div class="stage-indicator-pill">
+                                    <span class="text-muted font-11">CURRENT STAGE:</span>
+                                    <strong id="multiverse-current-stage-badge" class="highlight-violet">STAGE 1</strong>
+                                </div>
+                            </div>
+                            <p class="tab-intro-text">Conquer escalating multiverse stages. Damage is dealt strictly through real-world uninterrupted focus blocks. Clearing each stage advances difficulty and unlocks high-tier XP rewards.</p>
+                            <div id="multiverse-boss-stages-container" class="boss-cards-row mt-15"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 10: PROGRESS & 30-DAY ARCS ================= -->
+                <section id="records-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ PROGRESSION HISTORY & 30-DAY ARCS ]</h2>
+                            <div class="progress-actions">
+                                <button id="btn-open-plateau-diagnostic" class="btn-secondary-holo btn-sm">🔍 PLATEAU DIAGNOSTICS</button>
+                                <button id="btn-start-next-arc" class="btn-primary-holo btn-sm">⚡ START NEXT 30-DAY ARC</button>
+                            </div>
+                        </div>
+
+                        <!-- Persistent Arc History -->
+                        <div class="arc-history-section">
+                            <h3 class="card-head-title">[ 180-DAY HUNTER EVOLUTION CHRONICLES ]</h3>
+                            <div id="arc-history-container" class="arc-history-list mt-15"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 11: COACH CLIENTS ================= -->
+                <section id="clients-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ COACHING PLATFORM — HUNTER CLIENTS ]</h2>
+                            <button id="btn-open-add-client" class="btn-primary-holo btn-sm">+ ONBOARD NEW CLIENT</button>
+                        </div>
+                        <div id="clients-list-container" class="clients-grid"></div>
+                    </div>
+                </section>
+
+                <!-- ================= TAB 12: REWARDS & SHOP ================= -->
+                <section id="shop-tab" class="tab-panel">
+                    <div class="hologram-window">
+                        <div class="window-header">
+                            <h2 class="window-title">[ HUNTER REWARDS STORE & INVENTORY ]</h2>
+                            <span class="system-code">EXCHANGE QUEST GOLD FOR REAL-LIFE REWARDS</span>
+                        </div>
+                        <div class="shop-grid">
+                            <div class="shop-item-card">
+                                <span class="shop-icon">🎮</span>
+                                <h4 class="shop-title">90 Mins Guilt-Free Video Games</h4>
+                                <span class="shop-cost">🪙 400 Gold</span>
+                                <button class="btn-primary-holo btn-sm btn-buy-reward" data-cost="400">UNLOCK REWARD</button>
+                            </div>
+                            <div class="shop-item-card">
+                                <span class="shop-icon">🍕</span>
+                                <h4 class="shop-title">Favorite Treat / Cheat Meal</h4>
+                                <span class="shop-cost">🪙 700 Gold</span>
+                                <button class="btn-primary-holo btn-sm btn-buy-reward" data-cost="700">UNLOCK REWARD</button>
+                            </div>
+                            <div class="shop-item-card">
+                                <span class="shop-icon">🎬</span>
+                                <h4 class="shop-title">Cinema / Binge Night Episode Block</h4>
+                                <span class="shop-cost">🪙 500 Gold</span>
+                                <button class="btn-primary-holo btn-sm btn-buy-reward" data-cost="500">UNLOCK REWARD</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ================= MODALS & OVERLAYS ================= -->
+
+    <!-- 1. "WHAT'S AVAILABLE TODAY?" MEAL GENERATOR MODAL -->
+    <div id="modal-available-ingredients" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ 🥘 WHAT'S AVAILABLE TODAY? — MEAL GENERATOR ]</h3>
+                <button class="modal-close-x" onclick="document.getElementById('modal-available-ingredients').classList.add('hidden')">✕</button>
+            </div>
+            <p class="modal-desc">Select the ingredients in your kitchen today. The System will construct your daily meal plan staying within your macro targets.</p>
+
+            <div class="ingredients-pills-selector mt-15">
+                <div class="ingredient-toggle-pill selected" data-food-id="f_eggs_whole">🥚 Eggs</div>
+                <div class="ingredient-toggle-pill selected" data-food-id="f_steamed_rice">🍚 Rice</div>
+                <div class="ingredient-toggle-pill selected" data-food-id="f_moong_dal">🍲 Moong Dal</div>
+                <div class="ingredient-toggle-pill selected" data-food-id="f_paneer_standard">🧀 Paneer</div>
+                <div class="ingredient-toggle-pill selected" data-food-id="f_chicken_breast">🍗 Chicken Breast</div>
+                <div class="ingredient-toggle-pill selected" data-food-id="f_fresh_curd">🥛 Curd (Dahi)</div>
+                <div class="ingredient-toggle-pill selected" data-food-id="f_wheat_roti">🫓 Roti</div>
+                <div class="ingredient-toggle-pill selected" data-food-id="f_rolled_oats">🥣 Oats</div>
+                <div class="ingredient-toggle-pill" data-food-id="f_soya_chunks">🌱 Soya Chunks</div>
+                <div class="ingredient-toggle-pill" data-food-id="f_tofu_bhurji">🧈 Tofu</div>
+                <div class="ingredient-toggle-pill" data-food-id="f_kala_chana">🧆 Kala Chana</div>
+                <div class="ingredient-toggle-pill" data-food-id="f_rajma_curry">🍛 Rajma</div>
+                <div class="ingredient-toggle-pill" data-food-id="f_moong_sprouts">🥗 Sprouts</div>
+                <div class="ingredient-toggle-pill" data-food-id="f_veg_poha">🥣 Poha</div>
+            </div>
+
+            <div class="modal-actions mt-20">
+                <button id="btn-generate-from-available" class="btn-primary-holo btn-wide">⚡ GENERATE TODAY'S MEAL PLAN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. DAILY HUNTER JOURNAL MODAL -->
+    <div id="modal-hunter-journal" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ 📖 DAILY HUNTER JOURNAL ]</h3>
+                <button class="modal-close-x" onclick="document.getElementById('modal-hunter-journal').classList.add('hidden')">✕</button>
+            </div>
+            <form id="form-hunter-journal" class="system-form">
+                <div class="journal-checkboxes-grid">
+                    <label><input type="checkbox" id="j-workout-check" checked> Workout Cleared</label>
+                    <label><input type="checkbox" id="j-nutrition-check" checked> Nutrition Adhered</label>
+                    <label><input type="checkbox" id="j-learning-check"> Learning Block Done</label>
+                    <label><input type="checkbox" id="j-business-check"> Business Quest Done</label>
+                </div>
+                <div class="form-group mt-15">
+                    <label>TODAY'S ENERGY LEVEL (1 - 10):</label>
+                    <input type="number" id="j-energy-rating" min="1" max="10" value="8">
+                </div>
+                <div class="form-group">
+                    <label>TODAY'S LESSON / OBSERVATION:</label>
+                    <input type="text" id="j-lesson-text" placeholder="e.g. Higher hydration improved 3rd set endurance on squats">
+                </div>
+                <div class="form-group">
+                    <label>TOMORROW'S #1 PRIORITY:</label>
+                    <input type="text" id="j-priority-text" placeholder="e.g. Complete 5km run at 6:30 AM before work">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary-holo btn-wide">RECORD JOURNAL (+150 Discipline XP, +100 Mind XP)</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. PLATEAU DETECTION MODAL -->
+    <div id="modal-plateau-diagnostic" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ 🔍 PLATEAU DETECTION & METABOLIC DIAGNOSTICS ]</h3>
+                <button class="modal-close-x" onclick="document.getElementById('modal-plateau-diagnostic').classList.add('hidden')">✕</button>
+            </div>
+            <div id="plateau-diagnostic-content"></div>
+        </div>
+    </div>
+
+    <!-- 4. EXERCISE SUBSTITUTION MODAL -->
+    <div id="modal-exercise-substitution" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ 🔄 EXERCISE PATTERN SUBSTITUTION ]</h3>
+                <button class="modal-close-x" onclick="document.getElementById('modal-exercise-substitution').classList.add('hidden')">✕</button>
+            </div>
+            <p class="modal-desc">Target Movement: <strong id="sub-modal-target-name" class="highlight-cyan">Lat Pulldown</strong></p>
+            <div id="sub-modal-options-list" class="sub-options-list mt-15"></div>
+        </div>
+    </div>
+
+    <!-- 5. AWAKENING PROTOCOL WIZARD MODAL -->
+    <div id="modal-awakening-protocol" class="system-modal-backdrop hidden">
+        <div class="modal-hologram wizard-holo">
+            <div id="awakening-intro-screen" class="awakening-intro">
+                <div class="awakening-aura"></div>
+                <h1 class="awakening-title">⚡ SYSTEM AWAKENING ⚡</h1>
+                <h2 class="awakening-subtitle">A NEW HUNTER HAS AWAKENED</h2>
+                <p class="awakening-desc">
+                    Your real body is the character. Your real habits are your stats.<br>
+                    The System will assess your biometrics, target archetype, available equipment, and nutrition to forge your personalized Ascension Protocol.
+                </p>
+                <button id="btn-awakening-start" class="btn-primary-holo btn-large glow-pulse">START AWAKENING PROTOCOL</button>
+            </div>
+
+            <div id="awakening-wizard-content" class="awakening-wizard hidden">
+                <div class="wizard-header">
+                    <div class="wizard-title-wrap">
+                        <h3 class="wizard-title">[ SYSTEM AWAKENING ASSESSMENT ]</h3>
+                        <span id="wizard-step-indicator" class="wizard-step-text">STEP 1 OF 10</span>
+                    </div>
+                    <div class="wizard-progress-track"><div id="wizard-progress-bar" class="wizard-progress-fill" style="width: 10%"></div></div>
+                </div>
+
+                <div class="wizard-body">
+                    <div id="wizard-step-1" class="wizard-step-panel">
+                        <h4 class="step-head">1. Identity & Fundamental Biometrics</h4>
+                        <div class="form-group"><label>HUNTER NAME:</label><input type="text" id="ob-hunter-name" value="Hunter"></div>
+                        <div class="form-row-3">
+                            <div class="form-group"><label>AGE:</label><input type="number" id="ob-age" value="24"></div>
+                            <div class="form-group"><label>SEX:</label><select id="ob-sex"><option value="male">Male</option><option value="female">Female</option></select></div>
+                            <div class="form-group"><label>HEIGHT (CM):</label><input type="number" id="ob-height" value="175"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>WEIGHT (KG):</label><input type="number" id="ob-weight" value="78.0" step="0.5"></div>
+                            <div class="form-group"><label>TARGET WEIGHT (KG):</label><input type="number" id="ob-target-weight" value="72.0" step="0.5"></div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-2" class="wizard-step-panel hidden">
+                        <h4 class="step-head">2. Choose Your Evolution Archetype</h4>
+                        <div class="archetypes-selector-grid">
+                            <div class="archetype-card selected" data-archetype="vtaper"><span class="arch-icon">⚡</span><h4>V-TAPER</h4><p>Broad shoulders, wide lats, narrow waist</p></div>
+                            <div class="archetype-card" data-archetype="athlete"><span class="arch-icon">🛡</span><h4>LEAN ATHLETE</h4><p>Agility, stamina, functional strength</p></div>
+                            <div class="archetype-card" data-archetype="lean_muscle"><span class="arch-icon">💪</span><h4>LEAN MUSCLE</h4><p>Muscle definition with low fat gain</p></div>
+                            <div class="archetype-card" data-archetype="bulk"><span class="arch-icon">🏋️</span><h4>BULK / MUSCLE</h4><p>Progressive hypertrophy & muscle mass</p></div>
+                            <div class="archetype-card" data-archetype="cut"><span class="arch-icon">🔥</span><h4>CUT / SHRED</h4><p>Accelerated fat loss preserving muscle</p></div>
+                            <div class="archetype-card" data-archetype="aesthetic"><span class="arch-icon">🗿</span><h4>AESTHETIC</h4><p>Balanced golden proportions</p></div>
+                        </div>
+                        <input type="hidden" id="input-physique-archetype" value="vtaper">
+                    </div>
+
+                    <div id="wizard-step-3" class="wizard-step-panel hidden">
+                        <h4 class="step-head">3. Baseline Body Circumferences (cm)</h4>
+                        <div class="form-row-3">
+                            <div class="form-group"><label>WAIST (CM):</label><input type="number" id="ob-waist" value="88"></div>
+                            <div class="form-group"><label>CHEST (CM):</label><input type="number" id="ob-chest" value="98"></div>
+                            <div class="form-group"><label>SHOULDER (CM):</label><input type="number" id="ob-shoulder" value="112"></div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-4" class="wizard-step-panel hidden">
+                        <h4 class="step-head">4. Select Available Training Environments</h4>
+                        <div class="realms-pill-grid">
+                            <div class="realm-select-pill selected" data-realm="gym">🏋️ GYM (Barbells & Machines)</div>
+                            <div class="realm-select-pill selected" data-realm="home">🏠 HOME (Dumbbells / Bodyweight)</div>
+                            <div class="realm-select-pill selected" data-realm="ground">🌳 GROUND (Running / Outdoor)</div>
+                            <div class="realm-select-pill selected" data-realm="calisthenics">🤸 CALISTHENICS (Skill Tree)</div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-5" class="wizard-step-panel hidden">
+                        <h4 class="step-head">5. Baseline Capability Check</h4>
+                        <div class="form-row">
+                            <div class="form-group"><label>MAX PUSH-UPS:</label><input type="number" id="ob-cap-pushups" value="15"></div>
+                            <div class="form-group"><label>MAX SQUATS:</label><input type="number" id="ob-cap-squats" value="25"></div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-6" class="wizard-step-panel hidden">
+                        <h4 class="step-head">6. Training Schedule</h4>
+                        <div class="form-row">
+                            <div class="form-group"><label>DAYS / WEEK:</label><select id="ob-days-week"><option value="3">3 Days</option><option value="4" selected>4 Days</option><option value="5">5 Days</option></select></div>
+                            <div class="form-group"><label>MINUTES / SESSION:</label><input type="number" id="ob-mins-session" value="50"></div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-7" class="wizard-step-panel hidden">
+                        <h4 class="step-head">7. Indian Nutrition Profile</h4>
+                        <div class="diet-pills-row">
+                            <div class="diet-pill" data-diet="veg">🥗 VEGETARIAN</div>
+                            <div class="diet-pill" data-diet="egg_veg">🥚 EGG VEGETARIAN</div>
+                            <div class="diet-pill selected" data-diet="non_veg">🍗 NON-VEGETARIAN</div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-8" class="wizard-step-panel hidden">
+                        <h4 class="step-head">8. Safety & Health Restrictions</h4>
+                        <div class="form-group checkbox-group"><label><input type="checkbox" id="ob-injury-toggle"> I currently have joint pain or movement limitations</label></div>
+                    </div>
+
+                    <div id="wizard-step-9" class="wizard-step-panel hidden">
+                        <h4 class="step-head">9. Life & Cognitive Allocation</h4>
+                        <div class="form-row">
+                            <div class="form-group"><label>FITNESS (%):</label><input type="number" id="ob-alloc-fitness" value="25"></div>
+                            <div class="form-group"><label>STUDY / CODING (%):</label><input type="number" id="ob-alloc-learning" value="35"></div>
+                        </div>
+                    </div>
+
+                    <div id="wizard-step-10" class="wizard-step-panel hidden">
+                        <h4 class="step-head">10. Complete Awakening Assessment</h4>
+                        <p class="final-step-msg">The System will calibrate your adaptive maintenance calories, initialize Phase 1 (Foundation), and configure your 4 training realms.</p>
+                    </div>
+                </div>
+
+                <div class="wizard-footer">
+                    <button id="btn-wizard-prev" class="btn-secondary-holo" style="display: none;">PREVIOUS</button>
+                    <button id="btn-wizard-next" class="btn-primary-holo">CONTINUE ➔</button>
+                    <button id="btn-wizard-finish" class="btn-primary-holo glow-pulse" style="display: none;">⚡ AWAKEN HUNTER</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. MORNING CHECK MODAL -->
+    <div id="modal-morning-check" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ 🌅 MORNING READINESS EVALUATION ]</h3>
+                <button class="modal-close-x" id="btn-close-morning-check">✕</button>
+            </div>
+            <div class="sliders-list">
+                <div class="slider-group"><label>SLEEP QUALITY (1 - 5):</label><input type="range" id="rec-sleep" min="1" max="5" value="4"></div>
+                <div class="slider-group"><label>ENERGY & VITALITY (1 - 5):</label><input type="range" id="rec-energy" min="1" max="5" value="4"></div>
+                <div class="slider-group"><label>SORENESS (1 = None, 5 = Severe):</label><input type="range" id="rec-soreness" min="1" max="5" value="2"></div>
+                <div class="slider-group"><label>STRESS (1 = Low, 5 = High):</label><input type="range" id="rec-stress" min="1" max="5" value="2"></div>
+                <div class="slider-group"><label>MOTIVATION (1 - 5):</label><input type="range" id="rec-motivation" min="1" max="5" value="5"></div>
+            </div>
+            <div id="morning-check-preview" class="check-preview-box mt-15">
+                <span style="color: #10b981; font-weight: bold;">[ GREEN READINESS ]</span> Normal planned training
+            </div>
+            <div class="modal-actions mt-20">
+                <button type="button" class="btn-primary-holo btn-wide" id="btn-submit-morning-check">CONFIRM READINESS (+120 Recovery XP)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. CLOSEST NUTRITIONAL FOOD SWAP MODAL -->
+    <div id="modal-food-swap" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ 🔄 CLOSEST NUTRITIONAL REPLACEMENT (±15% TOLERANCE) ]</h3>
+                <button class="modal-close-x" id="btn-close-swap-modal">✕</button>
+            </div>
+            <p class="modal-desc">Currently Replacing: <strong id="swap-modal-item-name" class="highlight-cyan">Paneer 120g</strong></p>
+            <div id="food-swap-options-list" class="swap-options-grid"></div>
+        </div>
+    </div>
+
+    <!-- 8. BOSS RAID FOCUS MODAL -->
+    <div id="modal-boss-raid" class="system-modal-backdrop hidden">
+        <div class="modal-hologram boss-raid-holo">
+            <div class="window-header">
+                <h3 id="boss-raid-name" class="window-title">[ S-RANK BOSS RAID: PROCRASTINATION DEMON ]</h3>
+                <button class="modal-close-x" id="btn-close-boss-modal">✕</button>
+            </div>
+            <div id="boss-raid-objective" class="boss-obj-highlight">Real-World Objective: 90 Mins Deep Coding / System Study</div>
+            <div class="boss-combat-arena">
+                <div class="boss-avatar-large">👹</div>
+                <div class="boss-hp-bar-large"><div id="boss-hp-fill" class="boss-hp-fill" style="width: 100%"></div></div>
+                <div class="raid-timer-display" id="boss-raid-timer">45:00</div>
+            </div>
+            <div class="modal-actions">
+                <button id="btn-start-focus-raid" class="btn-primary-holo btn-wide">START FOCUS RAID</button>
+                <button id="btn-abandon-raid" class="btn-secondary-holo">RETREAT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. LOG MEASUREMENT MODAL -->
+    <div id="modal-log-measurement" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ LOG BIOMETRIC PROGRESS ]</h3>
+                <button class="modal-close-x" id="btn-close-meas-modal">✕</button>
+            </div>
+            <form id="form-log-measurement" class="system-form">
+                <div class="form-row">
+                    <div class="form-group"><label>WEIGHT (KG):</label><input type="number" id="meas-weight" step="0.1" value="78.0" required></div>
+                    <div class="form-group"><label>WAIST (CM):</label><input type="number" id="meas-waist" step="0.5" value="88.0" required></div>
+                </div>
+                <div class="form-group"><label>CHECK-IN NOTES:</label><input type="text" id="meas-notes" value="Weekly progress check"></div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary-holo btn-wide">SAVE MEASUREMENT (+180 Body XP)</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 10. ADD CLIENT MODAL -->
+    <div id="modal-add-client" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ ONBOARD NEW COACHING CLIENT ]</h3>
+                <button class="modal-close-x" id="btn-close-client-modal">✕</button>
+            </div>
+            <form id="form-add-client" class="system-form">
+                <div class="form-group"><label>CLIENT FULL NAME:</label><input type="text" id="client-name" placeholder="e.g. Rohan Sharma" required></div>
+                <div class="form-row-3">
+                    <div class="form-group"><label>AGE:</label><input type="number" id="client-age" value="28"></div>
+                    <div class="form-group"><label>SEX:</label><select id="client-sex"><option value="male">Male</option><option value="female">Female</option></select></div>
+                    <div class="form-group"><label>HEIGHT (CM):</label><input type="number" id="client-height" value="175"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>WEIGHT (KG):</label><input type="number" id="client-weight" value="80"></div>
+                    <div class="form-group"><label>TARGET WEIGHT (KG):</label><input type="number" id="client-target-weight" value="72"></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary-holo btn-wide">REGISTER CLIENT</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 11. CLIENT DETAILS MODAL -->
+    <div id="modal-client-details" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ CLIENT PROFILE DOSSIER ]</h3>
+                <button class="modal-close-x" onclick="document.getElementById('modal-client-details').classList.add('hidden')">✕</button>
+            </div>
+            <div id="client-details-content"></div>
+        </div>
+    </div>
+
+    <!-- 12. CREATE CUSTOM QUEST MODAL -->
+    <div id="modal-create-quest" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ REGISTER REAL-WORLD QUEST ]</h3>
+                <button class="modal-close-x" id="btn-close-quest-modal">✕</button>
+            </div>
+            <form id="form-create-quest" class="system-form">
+                <div class="form-group"><label>QUEST TITLE:</label><input type="text" id="quest-input-title" placeholder="e.g. 90m Coding Focus Block" required maxlength="60"></div>
+                <div class="form-row">
+                    <div class="form-group"><label>ATTRIBUTE:</label><select id="quest-input-stat"><option value="str">Strength</option><option value="agi">Agility</option><option value="int">Intelligence</option><option value="biz">Business</option></select></div>
+                    <div class="form-group"><label>DIFFICULTY:</label><select id="quest-input-rank"><option value="E">E-Rank</option><option value="D">D-Rank</option><option value="C" selected>C-Rank</option><option value="B">B-Rank</option><option value="A">A-Rank</option></select></div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn-primary-holo btn-wide">ISSUE QUEST</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 13. EVIDENCE LAYER INSPECTOR MODAL -->
+    <div id="modal-evidence-inspector" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo modal-wide">
+            <div class="window-header">
+                <h3 class="window-title">[ 🔬 EVIDENCE LAYER & SCIENTIFIC REGISTRY ]</h3>
+                <button class="modal-close-x" id="btn-close-evidence-modal">✕</button>
+            </div>
+            <div class="evidence-tabs-bar">
+                <button class="btn-evidence-filter active" data-filter="all">ALL RULES</button>
+                <button class="btn-evidence-filter" data-filter="scientific">CLINICAL & GUIDELINE (ICMR/ISSN/ACSM)</button>
+                <button class="btn-evidence-filter" data-filter="heuristic">APPLICATION HEURISTICS</button>
+                <button class="btn-evidence-filter" data-filter="gamification">ANIME RPG LAYER (NON-PHYSIOLOGICAL)</button>
+            </div>
+            <div id="evidence-rules-container" class="evidence-list-container mt-15"></div>
+        </div>
+    </div>
+
+    <!-- 14. EMERGENCY STOP & SAFETY SCREENING MODAL -->
+    <div id="modal-emergency-stop" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ ⚠ SAFETY PROTOCOL & RED-FLAG SCREENING ]</h3>
+                <button class="modal-close-x" id="btn-close-emergency-modal">✕</button>
+            </div>
+            <div id="emergency-modal-body"></div>
+        </div>
+    </div>
+
+    <!-- 15. PLAN TRANSPARENCY EXPLAINER MODAL -->
+    <div id="modal-plan-explainer" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo">
+            <div class="window-header">
+                <h3 class="window-title">[ ❓ WHY WAS THIS PLAN GENERATED? ]</h3>
+                <button class="modal-close-x" id="btn-close-explainer-modal">✕</button>
+            </div>
+            <div id="plan-explainer-content"></div>
+        </div>
+    </div>
+
+    <!-- 16. AUDIT TRAIL & PROGRAM VERSIONING MODAL -->
+    <div id="modal-audit-trail" class="system-modal-backdrop hidden">
+        <div class="modal-hologram form-holo modal-wide">
+            <div class="window-header">
+                <h3 class="window-title">[ 📜 AUDIT TRAIL & PROGRAM VERSION HISTORY ]</h3>
+                <button class="modal-close-x" id="btn-close-audit-modal">✕</button>
+            </div>
+            <div class="audit-modal-content">
+                <div class="audit-version-section">
+                    <h4 class="font-13 highlight-cyan uppercase mb-10">Program Version History (Client / Hunter)</h4>
+                    <div id="program-versions-list" class="program-versions-box"></div>
+                </div>
+                <div class="audit-logs-section mt-20">
+                    <h4 class="font-13 highlight-green uppercase mb-10">Immutable Decision & Adjustment Audit Trail</h4>
+                    <div id="audit-trail-logs-list" class="audit-logs-box"></div>
+                </div>
+            </div>
+    <!-- Mobile Bottom Navigation Dock -->
+    <nav class="mobile-bottom-nav">
+        <button class="mb-nav-item active" data-tab="status-tab">
+            <span class="mb-icon">◈</span>
+            <span class="mb-label">Dashboard</span>
+        </button>
+        <button class="mb-nav-item" data-tab="training-tab">
+            <span class="mb-icon">🏋️</span>
+            <span class="mb-label">Train</span>
+        </button>
+        <button class="mb-nav-item" data-tab="nutrition-tab">
+            <span class="mb-icon">🍱</span>
+            <span class="mb-label">Nutrition</span>
+        </button>
+        <button class="mb-nav-item" data-tab="quests-tab">
+            <span class="mb-icon">📜</span>
+            <span class="mb-label">Quests</span>
+        </button>
+        <button class="mb-nav-item" data-tab="multiverse-tab">
+            <span class="mb-icon">🌌</span>
+            <span class="mb-label">Legion</span>
+        </button>
+        <button class="mb-nav-item" id="btn-mobile-more-menu">
+            <span class="mb-icon">☰</span>
+            <span class="mb-label">Menu</span>
+        </button>
+    </nav>
+
+    <!-- Animation & VFX Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.4/dist/confetti.browser.min.js"></script>
+
+    <!-- Scripts Loaded in Modular Order -->
+    <script src="js/audio.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/cinematic/cinematic-state.js"></script>
+    <script src="js/cinematic/awakening/gojo-six-eyes.js"></script>
+    <script src="js/cinematic/awakening/monarch-awakening.js"></script>
+    <script src="js/cinematic/awakening/awakening-engine.js"></script>
+    <script src="js/cinematic/cinematic-engine.js"></script>
+    <script src="js/evidence/guideline-source.js"></script>
+    <script src="js/evidence/rule-version.js"></script>
+    <script src="js/evidence/evidence-registry.js"></script>
+    <script src="js/core/confidence-system.js"></script>
+    <script src="js/core/emergency-stop.js"></script>
+    <script src="js/core/audit-trail.js"></script>
+    <script src="js/core/program-versioning.js"></script>
+    <script src="js/core/system-state.js"></script>
+    <script src="js/core/phase-engine.js"></script>
+    <script src="js/core/decision-engine.js"></script>
+    <script src="js/fitness/exercise-database.js"></script>
+    <script src="js/fitness/substitution-engine.js"></script>
+    <script src="js/fitness/safety-router.js"></script>
+    <script src="js/fitness/training-engine.js"></script>
+    <script src="js/fitness/calisthenics-tree.js"></script>
+    <script src="js/nutrition/food-database.js"></script>
+    <script src="js/nutrition/food-swap-engine.js"></script>
+    <script src="js/nutrition/meal-generator.js"></script>
+    <script src="js/nutrition/nutrition-engine.js"></script>
+    <script src="js/recovery/recovery-engine.js"></script>
+    <script src="js/quests/hunter-journal.js"></script>
+    <script src="js/quests/arc-engine.js"></script>
+    <script src="js/quests/life-quests.js"></script>
+    <script src="js/multiverse/multiverse-engine.js"></script>
+    <script src="js/analytics/plateau-engine.js"></script>
+    <script src="js/analytics/analytics-engine.js"></script>
+    <script src="js/clients/client-manager.js"></script>
+    <script src="js/radar.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/world/world-engine.js"></script>
+    <script src="js/world/domain-meditation.js"></script>
+    <script src="js/world/evolution-chamber.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
