@@ -219,16 +219,15 @@ class DomainMeditationEngine {
         el.innerHTML = `
             <div class="domain-meditation-container text-center">
                 <div class="domain-kanji-bg">領域展開・完了</div>
-                <div class="domain-badge highlight-green">DOMAIN EXPANSION CONCLUDED</div>
-                <h1 class="domain-title mt-15">“YOUR CONTROL HAS IMPROVED.”</h1>
+                <div class="domain-badge highlight-green">FOCUS SESSION CONCLUDED</div>
+                <h1 class="domain-title mt-15">“BREATHING CONTROL ESTABLISHED.”</h1>
                 <p class="font-14 text-muted mt-10">
-                    Satoru Gojo nods in acknowledgement. Your cognitive bandwidth and focus are restored.
+                    Satoru Gojo nods in acknowledgement. 10-minute diaphragmatic focus session completed.
                 </p>
                 <div class="domain-rewards-grid mt-20">
                     <div class="csm-pill highlight-purple">🧠 +${rewardMindXp} MIND XP</div>
                     <div class="csm-pill highlight-green">❤️ +${rewardRecXp} RECOVERY XP</div>
                     <div class="csm-pill highlight-gold">🪙 +${rewardGold} GOLD</div>
-                    <div class="csm-pill highlight-cyan">🎯 FOCUS +5</div>
                 </div>
                 <button id="btn-finish-domain-meditation" class="btn-primary-holo mt-25">
                     ⚔ RETURN TO MULTIVERSE WORLD

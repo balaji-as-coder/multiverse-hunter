@@ -173,9 +173,11 @@ class SkillTreeEngine {
 
     checkNodePrerequisites(node) {
         const s = window.systemState ? window.systemState.data : null;
-        const currentBodyLvl = (s && s.levels) ? (s.levels.bodyLevel || 12) : 12;
-        const currentDiscLvl = (s && s.levels) ? (s.levels.disciplineLevel || 10) : 10;
-        const currentArc = 1;
+        const currentBodyLvl = (s && s.player && s.player.bodyLevel) ? s.player.bodyLevel : 12;
+        const currentDiscLvl = (s && s.xpTracks && s.xpTracks.disciplineXp) ? s.xpTracks.disciplineXp.level : 10;
+        
+        // Dynamically compute active / completed Arc number from system state
+        const currentArc = (s && s.player && s.player.activeArcNumber) ? s.player.activeArcNumber : (s && s.arcHistory) ? s.arcHistory.length : 1;
 
         const reqs = node.reqs || { bodyLvl: 1, discLvl: 1, arc: 1 };
         const bodyOk = currentBodyLvl >= reqs.bodyLvl;

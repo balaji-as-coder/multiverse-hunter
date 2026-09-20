@@ -108,14 +108,18 @@ class WorldEngine {
     }
 
     spawnTimeOfDayCharacter() {
-        const charMap = {
-            'DAWN': {
+        // 1. Evaluate User Weakness Domain
+        const weakness = window.weaknessRotationEngine ? window.weaknessRotationEngine.evaluateWeakness() : 'strength';
+        
+        // 2. Weakness x Time-of-Day Matrix
+        const matrix = {
+            'discipline': {
                 id: 'rock_lee',
                 name: 'Rock Lee',
                 universe: 'Naruto',
-                role: 'Discipline Master',
+                role: 'Discipline Master (Addressing Discipline Lag)',
                 avatar: '🥊',
-                greeting: 'You came! Good! Today, we forge unbreakable discipline through bodyweight repetition!',
+                greeting: 'The System detected a discipline lag! Hard work is the ultimate talent—let us forge unbreakable consistency today!',
                 missionTitle: "Rock Lee's Foundation Trial",
                 exercises: [
                     { name: 'Strict Hollow Push-ups', sets: '3 × 15' },
@@ -125,11 +129,11 @@ class WorldEngine {
                 ],
                 reward: { bodyXp: 85, discXp: 50, gold: 120 }
             },
-            'DAY': {
+            'strength': {
                 id: 'zoro',
                 name: 'Roronoa Zoro',
                 universe: 'One Piece',
-                role: 'Warrior Mentor',
+                role: 'Warrior Mentor (Targeting Strength Overload)',
                 avatar: '⚔️',
                 greeting: 'Today, we test your strength. Lock in your form and dominate each progressive overload set.',
                 missionTitle: "Zoro's Iron Vessel Protocol",
@@ -141,11 +145,23 @@ class WorldEngine {
                 ],
                 reward: { bodyXp: 180, discXp: 60, gold: 150 }
             },
-            'DUSK': {
+            'mind': {
+                id: 'gojo',
+                name: 'Satoru Gojo',
+                universe: 'Jujutsu Kaisen',
+                role: 'Focus & Meditation Guide (Calibrating Cognitive Load)',
+                avatar: '🌌',
+                greeting: 'Your mind needs calibration. Step inside the Infinite Void and restore prefrontal focus through controlled breathing.',
+                missionTitle: "Gojo's Domain: Limitless Meditation",
+                isMeditation: true,
+                durationMins: 10,
+                reward: { mindXp: 100, recXp: 50, gold: 100 }
+            },
+            'recovery': {
                 id: 'asta',
                 name: 'Asta',
                 universe: 'Black Clover',
-                role: 'Willpower Limit Breaker',
+                role: 'Work Capacity & Aerobic Adaptation',
                 avatar: '🗡️',
                 greeting: 'Not giving up is my magic! Push your heart rate to the absolute limit and conquer today’s quota!',
                 missionTitle: "Asta's Anti-Fatigue Circuit",
@@ -156,22 +172,16 @@ class WorldEngine {
                     { name: 'Shadow Sprints / Fast Steps', sets: '5 min finisher' }
                 ],
                 reward: { bodyXp: 110, discXp: 70, gold: 140 }
-            },
-            'NIGHT': {
-                id: 'gojo',
-                name: 'Satoru Gojo',
-                universe: 'Jujutsu Kaisen',
-                role: 'Focus & Meditation Guide',
-                avatar: '🌌',
-                greeting: 'Your body has fought well today. Now, step inside the Infinite Void and absorb pure clarity.',
-                missionTitle: "Gojo's Domain: Limitless Meditation",
-                isMeditation: true,
-                durationMins: 10,
-                reward: { mindXp: 100, recXp: 50, gold: 100 }
             }
         };
 
-        this.activeCharacter = charMap[this.timeOfDay] || charMap['DAY'];
+        // If Nighttime (9pm-5am), default to Gojo's recovery/meditation domain
+        if (this.timeOfDay === 'NIGHT') {
+            this.activeCharacter = matrix['mind'];
+        } else {
+            this.activeCharacter = matrix[weakness] || matrix['strength'];
+        }
+
         this.renderCharacterWorldInteraction();
     }
 
