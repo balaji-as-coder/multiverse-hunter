@@ -446,9 +446,24 @@ class MasterApp {
         this.renderProgressView();
         this.renderJournalEntries();
 
-        // 10. Living World Hub & Hunter Evolution Chamber
+        // 10. Hunter Status Centerpiece Dynamic Sync
+        const hscName = document.getElementById('hsc-hunter-name');
+        if (hscName) hscName.innerText = s.player.name.toUpperCase();
+        const hscRank = document.getElementById('hsc-rank-badge');
+        if (hscRank) hscRank.innerText = `${s.player.rank}-RANK`;
+
+        // 11. Living World Hub & Hunter Evolution Chamber
         if (window.worldEngine) {
             window.worldEngine.renderCharacterWorldInteraction();
+            const hccWorld = document.getElementById('hcc-world-name');
+            if (hccWorld && window.worldEngine.realms[window.worldEngine.currentRealmId]) {
+                hccWorld.innerText = window.worldEngine.realms[window.worldEngine.currentRealmId].name;
+            }
+            const hccMentor = document.getElementById('hcc-mentor-name');
+            if (hccMentor && window.worldEngine.activeCharacter) {
+                const rel = window.worldEngine.getRelationship(window.worldEngine.activeCharacter.id);
+                hccMentor.innerText = `${window.worldEngine.activeCharacter.name} (Affinity ${rel.affinity}%)`;
+            }
         }
         if (window.evolutionChamber) {
             window.evolutionChamber.renderChamber('evolution-chamber-container');
@@ -457,7 +472,11 @@ class MasterApp {
             window.journeyEngine.renderJourneyPath('journey-flow-path-container');
         }
         if (window.skillTreeEngine) {
-            window.skillTreeEngine.renderSkillTree('skill-tree-display-container');
+            if (window.skillTreeEngine.renderSkillTrees) {
+                window.skillTreeEngine.renderSkillTrees('skill-tree-display-container');
+            } else if (window.skillTreeEngine.renderSkillTree) {
+                window.skillTreeEngine.renderSkillTree('skill-tree-display-container');
+            }
         }
         if (window.bossTreeEngine) {
             window.bossTreeEngine.renderBossAndArcTree('boss-arc-tree-display-container');

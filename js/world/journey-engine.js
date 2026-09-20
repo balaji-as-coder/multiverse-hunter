@@ -1,10 +1,7 @@
 /**
- * MULTIVERSE HUNTER — INTERACTIVE TRAINING JOURNEY & ACTIVE SET ENGINE (V3.1)
- * Transforms static workout lists into an engaging, step-by-step visual anime path:
- * 01 AWAKENING (5m) -> 02 WARM-UP (8m) -> 03 STRENGTH (42m) -> 04 CONDITIONING (15m) -> 05 COOL DOWN (5m) -> 06 MEDITATION (10m) -> 07 BOSS TRIAL
- *
- * Includes Interactive Active Set Execution modal with live mentor coaching (Zoro/Rock Lee),
- * rep progression bars, auto-rest countdowns, and animated personal best graphs.
+ * MULTIVERSE HUNTER — INTERACTIVE TRAINING JOURNEY & ACTIVE SET ENGINE (V3.2)
+ * Living World Engine: Spatial Dungeon-like Journey, Multi-visualization Active Set Modal,
+ * "Why This Exercise?" Phase Intelligence, and Continuous Reaction Feedback Loop.
  */
 
 class JourneyEngine {
@@ -20,27 +17,41 @@ class JourneyEngine {
                 mentor: 'Gojo Satoru',
                 desc: 'Joint lubrication, cat-cows, wrist & hip opening protocols.',
                 xpReward: { bodyXp: 30, recXp: 20 },
+                why: {
+                    phaseNeed: 'JOINT LUBRICATION & NEUROMUSCULAR ACTIVATION',
+                    previous: '5 MIN PROTOCOL',
+                    current: 'DYNAMIC OPENERS',
+                    adaptation: 'Synovial fluid secretion and kinetic chain alignment prior to heavy loading.'
+                },
+                mentorQuote: '“Expand your perception. If your joints can’t glide freely, your technique will falter.”',
                 exercises: [
-                    { name: 'World Greatest Stretch', sets: 2, reps: '5/side', target: 'Full Body Mobility' },
-                    { name: 'Thoracic Rotations', sets: 2, reps: '10/side', target: 'Upper Spine Mobility' }
+                    { name: 'World Greatest Stretch', sets: 2, reps: '5/side', target: 'Full Body Mobility', history: [1, 2, 2] },
+                    { name: 'Thoracic Spine Rotations', sets: 2, reps: '10/side', target: 'Upper Spine Mobility', history: [8, 10, 10] }
                 ],
-                status: 'ready' // ready | in_progress | completed
+                status: 'completed'
             },
             {
                 id: 'step_warmup',
                 stepNum: '02',
-                title: 'DYNAMIC WARM-UP',
+                title: 'DYNAMIC CORE WARM-UP',
                 duration: '8 MIN',
                 type: 'warmup',
                 icon: '🔥',
                 mentor: 'Rock Lee',
                 desc: 'Core temperature rise, glute activation, hollow body prep.',
                 xpReward: { bodyXp: 45, discXp: 25 },
+                why: {
+                    phaseNeed: 'CORE TEMPERATURE RISE & MOTOR UNIT RECRUITMENT',
+                    previous: '30s HOLLOW HOLD',
+                    current: '45s HOLLOW HOLD',
+                    adaptation: 'High-threshold motor unit activation for spinal rigidity.'
+                },
+                mentorQuote: '“A burning spirit requires a burning core! Let us build an unbreakable foundation!”',
                 exercises: [
-                    { name: 'Hollow Body Hold', sets: 3, reps: '30s hold', target: 'Core Anterior Chain' },
-                    { name: 'Banded Lateral Walks / Air Squats', sets: 3, reps: '15 reps', target: 'Glutes & Hip Flexors' }
+                    { name: 'Hollow Body Isometric Hold', sets: 3, reps: '30s hold', target: 'Core Anterior Chain', history: [20, 25, 30] },
+                    { name: 'Banded Lateral Hip Walks', sets: 3, reps: '15 reps', target: 'Glutes & Hip Abductors', history: [10, 12, 15] }
                 ],
-                status: 'pending'
+                status: 'completed'
             },
             {
                 id: 'step_strength',
@@ -52,19 +63,26 @@ class JourneyEngine {
                 mentor: 'Roronoa Zoro',
                 desc: 'Heavy compound progressive overload with strict biomechanical tension.',
                 xpReward: { bodyXp: 180, discXp: 60, gold: 150 },
+                why: {
+                    phaseNeed: 'LOWER-BODY HYPERTROPHY & TENSION OVERLOAD',
+                    previous: '75.0 KG (4x8)',
+                    current: '80.0 KG (4x10)',
+                    adaptation: 'Type-II muscle fiber hypertrophy and central nervous system force production.'
+                },
+                mentorQuote: '“Enough explanation. Show me what you’ve got.”',
                 exercises: [
                     {
                         name: 'Barbell Back Squat',
                         target: 'Quads & Glutes',
                         sets: 4,
-                        reps: 8,
+                        reps: 10,
                         weight: 80,
                         prevWeight: 75,
                         rir: '1-2',
                         history: [65, 70, 75, 80]
                     },
                     {
-                        name: 'Overhead Barbell Press',
+                        name: 'Overhead Barbell Military Press',
                         target: 'Delts & Core Stability',
                         sets: 3,
                         reps: 8,
@@ -74,7 +92,7 @@ class JourneyEngine {
                         history: [35, 40, 42.5, 45]
                     },
                     {
-                        name: 'Strict Weighted Pull-ups / Inverted Rows',
+                        name: 'Strict Weighted Pull-ups',
                         target: 'Lats & Rhomboids',
                         sets: 3,
                         reps: 8,
@@ -84,7 +102,7 @@ class JourneyEngine {
                         history: [0, 5, 7.5, 10]
                     }
                 ],
-                status: 'pending'
+                status: 'in_progress'
             },
             {
                 id: 'step_conditioning',
@@ -96,10 +114,16 @@ class JourneyEngine {
                 mentor: 'Asta',
                 desc: 'Explosive jump circuits & anaerobic work capacity testing.',
                 xpReward: { bodyXp: 90, discXp: 50 },
+                why: {
+                    phaseNeed: 'ANAEROBIC GLYCOLYTIC WORK CAPACITY',
+                    previous: '3 ROUNDS',
+                    current: '4 ROUNDS',
+                    adaptation: 'Lactate clearance acceleration and mitochondrial density improvement.'
+                },
+                mentorQuote: '“Not giving up is my magic! Push your heart rate to the absolute limit!”',
                 exercises: [
-                    { name: 'Explosive Jump Squats', sets: 4, reps: '12 reps', target: 'Type-II Muscle Fibers' },
-                    { name: 'Diamond Push-ups', sets: 4, reps: '12 reps', target: 'Triceps & Upper Chest' },
-                    { name: 'Shadow Sprints / Fast Steps', sets: 4, reps: '45s max effort', target: 'VO2 Max' }
+                    { name: 'Explosive Jump Squats', sets: 4, reps: '12 reps', target: 'Type-II Muscle Fibers', history: [8, 10, 12] },
+                    { name: 'Diamond Push-ups', sets: 4, reps: '12 reps', target: 'Triceps & Upper Chest', history: [8, 10, 12] }
                 ],
                 status: 'pending'
             },
@@ -113,9 +137,16 @@ class JourneyEngine {
                 mentor: 'Giyu Tomioka',
                 desc: 'Parasympathetic shift, static stretching, diaphragmatic breathing.',
                 xpReward: { recXp: 40, bodyXp: 20 },
+                why: {
+                    phaseNeed: 'PARASYMPATHETIC NERVOUS SYSTEM RECOVERY',
+                    previous: 'STANDARD STRETCH',
+                    current: 'DOWN-REGULATION PROTOCOL',
+                    adaptation: 'Cortisol reduction and heart rate variability restoration.'
+                },
+                mentorQuote: '“Calm like the surface of still water. Allow your heartbeat to settle.”',
                 exercises: [
-                    { name: 'Pigeon Pose Stretch', sets: 2, reps: '45s/side', target: 'Glutes & Hip Capsule' },
-                    { name: 'Couch Stretch', sets: 2, reps: '45s/side', target: 'Hip Flexors & Quads' }
+                    { name: 'Deep Pigeon Pose', sets: 2, reps: '45s/side', target: 'Glutes & Hip Rotators', history: [30, 30, 45] },
+                    { name: 'Couch Hip Flexor Stretch', sets: 2, reps: '45s/side', target: 'Psoas & Quads', history: [30, 30, 45] }
                 ],
                 status: 'pending'
             },
@@ -126,9 +157,16 @@ class JourneyEngine {
                 duration: '10 MIN',
                 type: 'meditation',
                 icon: '🌌',
-                mentor: 'Satoru Gojo',
+                mentor: 'Gojo Satoru',
                 desc: 'Infinite Void cognitive calibration & alpha-wave brain state.',
                 xpReward: { mindXp: 100, recXp: 50, gold: 100 },
+                why: {
+                    phaseNeed: 'ALPHA WAVE BRAIN SYNCHRONIZATION',
+                    previous: '5 MINUTE FOCUS',
+                    current: '10 MINUTE LIMITLESS VOID',
+                    adaptation: 'Cognitive load regulation and prefrontal cortex recovery.'
+                },
+                mentorQuote: '“You will step inside the Infinite Void. Breathe and absorb the universe.”',
                 status: 'pending'
             },
             {
@@ -139,8 +177,15 @@ class JourneyEngine {
                 type: 'boss',
                 icon: '👹',
                 mentor: 'Sung Jin-Woo',
-                desc: 'Dimensional Gate Raid against the Special Grade Boss.',
+                desc: 'Dimensional Gate Raid against the Special Grade Sovereign.',
                 xpReward: { mindXp: 250, gold: 200 },
+                why: {
+                    phaseNeed: 'HUNTER RANK PROMOTION EXAM',
+                    previous: 'C-RANK GATE',
+                    current: 'B-RANK GATE',
+                    adaptation: 'Full-system mental and physical stress endurance.'
+                },
+                mentorQuote: '“Arise. Prove to the System that you belong in the next tier.”',
                 status: 'locked'
             }
         ];
@@ -156,7 +201,7 @@ class JourneyEngine {
 
     loadProgress() {
         try {
-            const raw = localStorage.getItem('HUNTER_JOURNEY_PROGRESS_V3');
+            const raw = localStorage.getItem('HUNTER_JOURNEY_PROGRESS_V3_2');
             if (raw) {
                 const saved = JSON.parse(raw);
                 this.journeySteps.forEach(step => {
@@ -170,38 +215,74 @@ class JourneyEngine {
         try {
             const map = {};
             this.journeySteps.forEach(s => map[s.id] = s.status);
-            localStorage.setItem('HUNTER_JOURNEY_PROGRESS_V3', JSON.stringify(map));
+            localStorage.setItem('HUNTER_JOURNEY_PROGRESS_V3_2', JSON.stringify(map));
         } catch (e) {}
     }
 
+    /**
+     * Renders the Spatial Dungeon-Like Pathway
+     */
     renderJourneyPath(containerId = 'journey-flow-path-container') {
         const container = document.getElementById(containerId);
         if (!container) return;
 
-        const html = this.journeySteps.map((step, idx) => {
+        const currentActiveIdx = this.journeySteps.findIndex(s => s.status === 'in_progress' || s.status === 'ready');
+        const activeStepObj = currentActiveIdx >= 0 ? this.journeySteps[currentActiveIdx] : this.journeySteps[2];
+
+        // 1. Horizontal Dungeon Spatial Pathway Map
+        const spatialMapHtml = `
+            <div class="dungeon-spatial-strip">
+                <div class="dss-header">
+                    <span class="font-10 highlight-cyan">🗺️ DUNGEON SPATIAL PROGRESSION</span>
+                    <span class="font-10 text-muted">DUNGEON DEPTH: LV. 24 SHADOW REALM</span>
+                </div>
+                <div class="dss-path-nodes">
+                    ${this.journeySteps.map((step, idx) => {
+                        const isDone = step.status === 'completed';
+                        const isCurrent = step.id === activeStepObj.id;
+                        return `
+                            <div class="dss-node ${isDone ? 'dss-done' : ''} ${isCurrent ? 'dss-current' : ''}">
+                                <div class="dss-icon-wrap">
+                                    ${isDone ? '✓' : step.icon}
+                                </div>
+                                <span class="dss-label">${step.title.split(' ')[0]}</span>
+                                ${isCurrent ? '<div class="dss-indicator-tag">YOU ARE HERE</div>' : ''}
+                            </div>
+                            ${idx < this.journeySteps.length - 1 ? `<div class="dss-connector ${isDone ? 'dss-con-done' : ''}"></div>` : ''}
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+
+        // 2. Vertical Node Pathway Cards
+        const nodesHtml = this.journeySteps.map((step, idx) => {
             const isLast = idx === this.journeySteps.length - 1;
-            const statusClass = step.status === 'completed' ? 'step-completed' : step.status === 'in_progress' ? 'step-active' : step.status === 'ready' ? 'step-ready' : 'step-locked';
-            const statusTag = step.status === 'completed' ? '✓ CLEARED' : step.status === 'in_progress' ? '⚔ IN BATTLE' : step.status === 'ready' ? '▶ READY' : '🔒 LOCKED';
+            const isCurrent = step.id === activeStepObj.id;
+            const statusClass = step.status === 'completed' ? 'step-completed' : (isCurrent || step.status === 'in_progress') ? 'step-active' : step.status === 'ready' ? 'step-ready' : 'step-locked';
+            const statusTag = step.status === 'completed' ? '✓ CLEARED' : (isCurrent || step.status === 'in_progress') ? '⚔ YOU ARE HERE (ACTIVE)' : step.status === 'ready' ? '▶ READY' : '🔒 LOCKED';
 
             return `
-                <div class="journey-node-wrap">
+                <div class="journey-node-wrap ${isCurrent ? 'jnw-current-highlight' : ''}">
                     <div class="journey-node-card ${statusClass}" data-step-id="${step.id}">
                         <div class="jnc-header">
-                            <span class="jnc-num font-10">PHASE ${step.stepNum}</span>
-                            <span class="jnc-duration font-10 highlight-cyan">${step.duration}</span>
-                            <span class="jnc-status-pill font-10 ${step.status === 'completed' ? 'highlight-green' : 'text-muted'}">${statusTag}</span>
+                            <div class="jnc-h-left">
+                                <span class="jnc-num font-10">PHASE ${step.stepNum}</span>
+                                <span class="jnc-duration font-10 highlight-cyan">${step.duration}</span>
+                            </div>
+                            <span class="jnc-status-pill font-10 ${step.status === 'completed' ? 'highlight-green' : isCurrent ? 'highlight-gold pulse-fast' : 'text-muted'}">${statusTag}</span>
                         </div>
-                        <div class="jnc-body mt-8">
+                        <div class="jnc-body mt-10">
                             <div class="jnc-icon">${step.icon}</div>
                             <div class="jnc-info">
                                 <h4 class="jnc-title">${step.title}</h4>
-                                <span class="jnc-mentor font-10 text-muted">GUIDE: ${step.mentor.toUpperCase()}</span>
+                                <span class="jnc-mentor font-10 text-muted">MENTOR: <strong class="highlight-violet">${step.mentor.toUpperCase()}</strong></span>
                                 <p class="jnc-desc font-11 mt-4">${step.desc}</p>
                             </div>
                         </div>
-                        <div class="jnc-footer mt-10">
-                            <button class="btn-primary-holo btn-sm btn-wide btn-launch-step" data-step-id="${step.id}">
-                                ${step.status === 'completed' ? '🔄 RE-PLAY PHASE' : step.status === 'in_progress' ? '⚔ CONTINUE PHASE' : '▶ LAUNCH PHASE'}
+                        <div class="jnc-footer mt-12">
+                            <button class="btn-primary-holo btn-sm btn-wide btn-launch-step ${isCurrent ? 'btn-glow-violet' : ''}" data-step-id="${step.id}">
+                                ${step.status === 'completed' ? '🔄 RE-PLAY PHASE' : isCurrent ? '⚔ ENTER BATTLE CHAMBER' : '▶ LAUNCH PHASE'}
                             </button>
                         </div>
                     </div>
@@ -214,9 +295,9 @@ class JourneyEngine {
             <div class="journey-flow-wrapper">
                 <div class="journey-flow-banner">
                     <div class="jfb-left">
-                        <span class="jfb-tag highlight-violet">🧭 TODAY'S STRUCTURED HUNTER JOURNEY</span>
-                        <h2 class="jfb-heading">ASCENSION PATHWAY — DAY 18</h2>
-                        <p class="font-12 text-muted">Complete phases sequentially to maximize neuromuscular adaptation, mental flow & recovery.</p>
+                        <span class="jfb-tag highlight-violet">🧭 STEP-BY-STEP ANIME TRAINING PATHWAY</span>
+                        <h2 class="jfb-heading">ASCENSION DUNGEON — DAY 18</h2>
+                        <p class="font-12 text-muted">Advance step-by-step through mobility, strength overload, conditioning, meditation and the boss gate.</p>
                     </div>
                     <div class="jfb-right">
                         <span class="jfb-progress-pill font-11">
@@ -224,8 +305,11 @@ class JourneyEngine {
                         </span>
                     </div>
                 </div>
+
+                ${spatialMapHtml}
+
                 <div class="journey-timeline-track mt-20">
-                    ${html}
+                    ${nodesHtml}
                 </div>
             </div>
         `;
@@ -274,17 +358,19 @@ class JourneyEngine {
             document.body.appendChild(modal);
         }
 
-        const primaryEx = step.exercises ? step.exercises[0] : { name: 'Compound Movement', sets: 3, reps: 10, weight: 60 };
+        const primaryEx = step.exercises ? step.exercises[0] : { name: 'Compound Movement', sets: 4, reps: 10, weight: 80, prevWeight: 75, history: [65, 70, 75, 80] };
         this.activeSetSession = {
             step,
             currentExIndex: 0,
             currentSet: 1,
-            totalSets: primaryEx.sets || 3,
+            totalSets: primaryEx.sets || 4,
             targetReps: primaryEx.reps || 10,
-            weightKg: primaryEx.weight || 60,
-            prevWeightKg: primaryEx.prevWeight || (primaryEx.weight ? primaryEx.weight - 5 : 55),
-            history: primaryEx.history || [50, 55, 60],
-            isComplete: false
+            completedRepsInSet: 0,
+            weightKg: primaryEx.weight || 80,
+            prevWeightKg: primaryEx.prevWeight || 75,
+            history: primaryEx.history || [65, 70, 75, 80],
+            isComplete: false,
+            hasReviewedWhy: false
         };
 
         this.renderActiveSetModal();
@@ -299,39 +385,91 @@ class JourneyEngine {
         const sess = this.activeSetSession;
         const ex = sess.step.exercises[sess.currentExIndex];
         const isPb = sess.weightKg > sess.prevWeightKg;
+        const why = sess.step.why || {
+            phaseNeed: 'LOWER-BODY STRENGTH & HYPERTROPHY',
+            previous: `${sess.prevWeightKg} KG`,
+            current: `${sess.weightKg} KG`,
+            adaptation: 'High mechanical tension and progressive motor unit recruitment.'
+        };
 
-        // Render live SVG strength progression graph
-        const historyData = sess.history || [60, 65, 70, 75];
+        // Graph computations
+        const historyData = sess.history || [65, 70, 75, 80];
         const maxVal = Math.max(...historyData, sess.weightKg) + 10;
         const minVal = Math.max(0, Math.min(...historyData) - 10);
         const range = maxVal - minVal || 1;
 
         const svgPoints = historyData.map((val, idx) => {
-            const x = 30 + idx * 70;
-            const y = 130 - ((val - minVal) / range) * 90;
+            const x = 30 + idx * 75;
+            const y = 120 - ((val - minVal) / range) * 80;
             return `${x},${y}`;
         }).join(' ');
+
+        // Set checklist items (e.g. SET 1 ✓, SET 2 ✓, SET 3 ●, SET 4 ○)
+        const setChecklistHtml = Array.from({ length: sess.totalSets }).map((_, i) => {
+            const setNum = i + 1;
+            let statusBadge = '';
+            let statusClass = '';
+            if (setNum < sess.currentSet) {
+                statusBadge = '✓ CLEARED';
+                statusClass = 'set-item-cleared';
+            } else if (setNum === sess.currentSet) {
+                statusBadge = '● ACTIVE NOW';
+                statusClass = 'set-item-active pulse-fast';
+            } else {
+                statusBadge = '○ PENDING';
+                statusClass = 'set-item-pending';
+            }
+            return `
+                <div class="set-check-badge ${statusClass}">
+                    <span class="scb-num">SET ${setNum}</span>
+                    <span class="scb-stat">${statusBadge}</span>
+                </div>
+            `;
+        }).join('');
 
         modal.innerHTML = `
             <div class="modal-hologram form-holo active-set-modal-box">
                 <div class="window-header">
                     <div class="w-head-left">
-                        <span class="font-11 highlight-violet">⚔️ ${sess.step.mentor.toUpperCase()} TRAINING CHAMBER</span>
+                        <span class="font-11 highlight-violet">⚔️ ${sess.step.mentor.toUpperCase()} TRAINING ARENA</span>
                         <h3 class="window-title">${sess.step.title}</h3>
                     </div>
                     <button class="modal-close-x" id="btn-close-active-training">✕</button>
                 </div>
 
+                <!-- 1. "WHY THIS EXERCISE?" Phase Intelligence Briefing -->
+                <div class="why-exercise-intelligence-card mt-15">
+                    <div class="weic-top">
+                        <span class="weic-pill highlight-cyan">🧠 PHASE INTELLIGENCE BRIEFING</span>
+                        <span class="font-10 text-muted">ADAPTIVE MOTOR RECRUITMENT</span>
+                    </div>
+                    <div class="weic-grid mt-10">
+                        <div class="weic-item">
+                            <span class="font-9 text-muted">CURRENT PHASE DEMAND</span>
+                            <strong class="font-11 highlight-gold">${why.phaseNeed}</strong>
+                        </div>
+                        <div class="weic-item">
+                            <span class="font-9 text-muted">PREVIOUS RECORD</span>
+                            <strong class="font-11 text-muted">${why.previous}</strong>
+                        </div>
+                        <div class="weic-item">
+                            <span class="font-9 text-muted">TODAY'S TARGET</span>
+                            <strong class="font-11 highlight-green">${why.current}</strong>
+                        </div>
+                    </div>
+                    <p class="font-11 text-secondary mt-8"><strong>Biomechanical Goal:</strong> ${why.adaptation}</p>
+                </div>
+
                 <!-- Mentor Dialogue Bubble -->
                 <div class="set-mentor-speech-wrap mt-15">
-                    <div class="sms-avatar font-28">⚔️</div>
+                    <div class="sms-avatar font-32">⚔️</div>
                     <div class="sms-bubble">
                         <strong class="highlight-cyan">${sess.step.mentor}:</strong>
-                        <span>“Last time you handled ${sess.prevWeightKg} kg. Today we're demanding ${sess.weightKg} kg on ${ex.name}. Lock in your breathing and dominate each rep!”</span>
+                        <span>${sess.step.mentorQuote || '“Enough explanation. Show me.”'}</span>
                     </div>
                 </div>
 
-                <!-- Active Exercise Focus Card -->
+                <!-- Active Exercise Arena -->
                 <div class="active-exercise-card mt-20">
                     <div class="aec-top">
                         <span class="aec-badge highlight-gold">EXERCISE ${sess.currentExIndex + 1} OF ${sess.step.exercises.length}</span>
@@ -339,59 +477,68 @@ class JourneyEngine {
                         <span class="aec-target text-muted font-12">${ex.target || 'Hypertrophy & Biomechanical Tension'}</span>
                     </div>
 
-                    <div class="aec-stats-strip mt-15">
-                        <div class="aec-stat-box">
-                            <span class="aec-lbl">CURRENT LOAD</span>
-                            <strong class="aec-val highlight-cyan">${sess.weightKg} KG</strong>
+                    <!-- 3 SIMULTANEOUS VISUALIZATIONS -->
+                    <div class="three-viz-grid mt-20">
+                        <!-- Visualization A: Real-Time Performance Graph -->
+                        <div class="viz-card viz-performance">
+                            <div class="viz-header">
+                                <span class="font-10 text-muted">A. PERFORMANCE EVOLUTION</span>
+                                ${isPb ? '<span class="pb-badge font-9 highlight-gold">★ NEW PR</span>' : ''}
+                            </div>
+                            <svg class="slg-svg" viewBox="0 0 300 130">
+                                <defs>
+                                    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                                        <stop offset="0%" stop-color="#38bdf8" />
+                                        <stop offset="100%" stop-color="#8b5cf6" />
+                                    </linearGradient>
+                                </defs>
+                                <line x1="20" y1="120" x2="280" y2="120" stroke="rgba(255,255,255,0.1)" />
+                                <line x1="20" y1="75" x2="280" y2="75" stroke="rgba(255,255,255,0.05)" />
+                                <polyline fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" points="${svgPoints}" class="slg-polyline" />
+                                ${historyData.map((val, idx) => {
+                                    const x = 30 + idx * 75;
+                                    const y = 120 - ((val - minVal) / range) * 80;
+                                    return `<circle cx="${x}" cy="${y}" r="4" fill="#00f2fe" class="slg-dot" /><text x="${x}" y="${y - 8}" font-size="9" fill="#9ca3af" text-anchor="middle">${val}kg</text>`;
+                                }).join('')}
+                            </svg>
+                            <div class="viz-graph-labels font-9 text-muted" style="display:flex; justify-content:space-around; margin-top:2px;">
+                                <span>W1</span><span>W2</span><span>W3</span><span>W4 (TODAY)</span>
+                            </div>
                         </div>
-                        <div class="aec-stat-box">
-                            <span class="aec-lbl">PREVIOUS LOAD</span>
-                            <strong class="aec-val text-muted">${sess.prevWeightKg} KG</strong>
-                        </div>
-                        <div class="aec-stat-box">
-                            <span class="aec-lbl">TARGET REPS</span>
-                            <strong class="aec-val highlight-green">${sess.targetReps} REPS</strong>
-                        </div>
-                        <div class="aec-stat-box">
-                            <span class="aec-lbl">SET NUMBER</span>
-                            <strong class="aec-val highlight-purple">${sess.currentSet} / ${sess.totalSets}</strong>
+
+                        <!-- Visualization B: Body XP Progression -->
+                        <div class="viz-card viz-xp">
+                            <div class="viz-header">
+                                <span class="font-10 text-muted">B. BODY XP PROGRESSION</span>
+                                <span class="font-10 highlight-cyan">82% LEVEL TO NEXT</span>
+                            </div>
+                            <div class="viz-xp-display mt-8">
+                                <div class="viz-xp-bar-shell">
+                                    <div class="viz-xp-bar-fill" style="width: 82%;"></div>
+                                </div>
+                                <div class="viz-xp-labels font-10 mt-6" style="display:flex; justify-content:space-between;">
+                                    <span class="text-muted">Current: 820 / 1000 XP</span>
+                                    <span class="highlight-gold">+180 XP on Clear</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- Animated Strength Progress Line Graph -->
-                    <div class="strength-live-graph-wrap mt-20">
-                        <div class="slg-header">
-                            <span class="font-11 text-muted">PROGRESSIVE OVERLOAD TRAJECTORY</span>
-                            ${isPb ? '<span class="pb-badge font-10 highlight-gold">★ NEW PERSONAL BEST (+5.0 KG)</span>' : ''}
+                    <!-- Visualization C: Current Session Set Checklist -->
+                    <div class="viz-card viz-session-sets mt-15">
+                        <div class="viz-header">
+                            <span class="font-10 text-muted">C. CURRENT SESSION SETS</span>
+                            <span class="font-10 highlight-purple">${sess.weightKg} KG × ${sess.targetReps} REPS</span>
                         </div>
-                        <svg class="slg-svg" viewBox="0 0 320 140">
-                            <defs>
-                                <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
-                                    <stop offset="0%" stop-color="#38bdf8" />
-                                    <stop offset="100%" stop-color="#8b5cf6" />
-                                </linearGradient>
-                            </defs>
-                            <!-- Grid Lines -->
-                            <line x1="20" y1="130" x2="300" y2="130" stroke="rgba(255,255,255,0.1)" />
-                            <line x1="20" y1="85" x2="300" y2="85" stroke="rgba(255,255,255,0.05)" />
-                            <line x1="20" y1="40" x2="300" y2="40" stroke="rgba(255,255,255,0.05)" />
-                            
-                            <!-- Animated Line Path -->
-                            <polyline fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${svgPoints}" class="slg-polyline" />
-                            
-                            <!-- Data Dots -->
-                            ${historyData.map((val, idx) => {
-                                const x = 30 + idx * 70;
-                                const y = 130 - ((val - minVal) / range) * 90;
-                                return `<circle cx="${x}" cy="${y}" r="4" fill="#00f2fe" class="slg-dot" /><text x="${x}" y="${y - 8}" font-size="9" fill="#9ca3af" text-anchor="middle">${val}k</text>`;
-                            }).join('')}
-                        </svg>
+                        <div class="session-set-pills-row mt-8">
+                            ${setChecklistHtml}
+                        </div>
                     </div>
 
-                    <!-- Rep Progress Bar & Complete Action -->
-                    <div class="active-set-action-bar mt-25">
-                        <button id="btn-finish-active-set" class="btn-primary-holo btn-wide btn-lg">
-                            ✓ COMPLETE SET ${sess.currentSet} (+${sess.targetReps} REPS @ ${sess.weightKg}KG)
+                    <!-- Live Reps Counter & Complete Set Action -->
+                    <div class="active-set-action-bar mt-20">
+                        <button id="btn-finish-active-set" class="btn-primary-holo btn-wide btn-lg btn-glow-violet">
+                            ⚔ COMPLETE SET ${sess.currentSet} (${sess.targetReps} REPS @ ${sess.weightKg} KG)
                         </button>
                     </div>
                 </div>
@@ -429,17 +576,22 @@ class JourneyEngine {
             confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
         }
 
+        // Trigger mentor relationship growth & reaction loop
+        if (window.worldEngine) {
+            window.worldEngine.recordMentorTraining(sess.step.mentor, 1);
+        }
+
         if (sess.currentSet < sess.totalSets) {
             sess.currentSet++;
             this.renderActiveSetModal();
-            if (window.app) window.app.showToast('SET RECORDED', `Set ${sess.currentSet - 1} cleared! Prepare for Set ${sess.currentSet}.`);
+            if (window.app) window.app.showToast('SET CLEARED!', `Set ${sess.currentSet - 1} logged! Performance graph updated.`);
         } else {
             // Exercise completed
             if (sess.currentExIndex < sess.step.exercises.length - 1) {
                 sess.currentExIndex++;
                 sess.currentSet = 1;
                 this.renderActiveSetModal();
-                if (window.app) window.app.showToast('EXERCISE CLEARED', `Moving to next exercise: ${sess.step.exercises[sess.currentExIndex].name}`);
+                if (window.app) window.app.showToast('EXERCISE MASTERED', `Advancing to ${sess.step.exercises[sess.currentExIndex].name}!`);
             } else {
                 // Entire Phase Cleared!
                 sess.step.status = 'completed';
@@ -448,15 +600,15 @@ class JourneyEngine {
                 if (modal) modal.classList.add('hidden');
 
                 // Award verified XP
-                const r = sess.step.xpReward || { bodyXp: 150, discXp: 50 };
+                const r = sess.step.xpReward || { bodyXp: 180, discXp: 60 };
                 if (r.bodyXp) window.systemState.gainTrackXp('bodyXp', r.bodyXp, `Cleared ${sess.step.title}`);
                 if (r.discXp) window.systemState.gainTrackXp('disciplineXp', r.discXp, `Discipline: ${sess.step.title}`);
-                if (r.recXp) window.systemState.gainTrackXp('recoveryXp', r.recXp, `Recovery Protocol: ${sess.step.title}`);
-                if (r.mindXp) window.systemState.gainTrackXp('mindXp', r.mindXp, `Mind Protocol: ${sess.step.title}`);
+                if (r.recXp) window.systemState.gainTrackXp('recoveryXp', r.recXp, `Recovery: ${sess.step.title}`);
+                if (r.mindXp) window.systemState.gainTrackXp('mindXp', r.mindXp, `Mind: ${sess.step.title}`);
 
                 if (window.systemAudio) window.systemAudio.playVictory();
                 if (window.app) {
-                    window.app.showToast('PHASE CONQUERED!', `🎉 ${sess.step.title} fully completed! Your Hunter stats have ascended.`);
+                    window.app.showToast('⚔️ PHASE CONQUERED!', `🎉 ${sess.step.title} fully completed! The World transforms.`);
                     window.app.syncUI();
                 }
                 this.renderJourneyPath();

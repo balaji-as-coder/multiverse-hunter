@@ -1,10 +1,7 @@
 /**
- * MULTIVERSE HUNTER — MASTER WORLD ENGINE (V3.1)
- * Transforms the application into a living anime universe where:
- * - The World responds dynamically to the real time of day, environment & hunter progression.
- * - Anime characters arrive at your training ground, challenge you, acknowledge your real lifts,
- *   and evolve their relationship with you over time.
- * - Governs Multiverse Realms (Shadow Realm, Grand Line, Ninja Realm, Dragon Domain, Jujutsu Void).
+ * MULTIVERSE HUNTER — MASTER WORLD ENGINE (V3.2)
+ * Living World Engine: Manages dynamic atmosphere, time-of-day cycles, realm shifts,
+ * and Persistent Mentor Relationship Progression (First Meeting -> Training Partner -> Trusted Warrior -> Elite Mentor -> Legendary Companion).
  */
 
 class WorldEngine {
@@ -12,7 +9,7 @@ class WorldEngine {
         this.realms = {
             'shadow': {
                 id: 'shadow',
-                name: 'Shadow Realm',
+                name: 'Shadow Realm Citadel',
                 universe: 'Solo Leveling',
                 focus: 'Strength & Progressive Overload',
                 environment: 'Dark Obsidian Citadel & Mist',
@@ -24,9 +21,9 @@ class WorldEngine {
             },
             'grand_line': {
                 id: 'grand_line',
-                name: 'Grand Line World',
+                name: 'Grand Line Cliffside',
                 universe: 'One Piece',
-                focus: 'Endurance, Heavy Compound Grit & Recovery',
+                focus: 'Heavy Compound Overload & Grit',
                 environment: 'Stormy Sea Cliff & Sea Breeze',
                 ambientBg: 'radial-gradient(circle at 50% 30%, #0d2238 0%, #08090d 85%)',
                 mentor: 'zoro',
@@ -36,7 +33,7 @@ class WorldEngine {
             },
             'ninja_realm': {
                 id: 'ninja_realm',
-                name: 'Hidden Leaf Grounds',
+                name: 'Hidden Leaf Training Grounds',
                 universe: 'Naruto',
                 focus: 'Agility, Calisthenics & Daily Discipline',
                 environment: 'Mountain Valley & Falling Leaves',
@@ -50,7 +47,7 @@ class WorldEngine {
                 id: 'dragon_domain',
                 name: 'Hyperbolic Gravity Chamber',
                 universe: 'Dragon Ball',
-                focus: 'Limit Breaking, High-Volume & Peak Power',
+                focus: 'Limit Breaking & Peak Power Output',
                 environment: 'Endless White Expanse with Golden Aura',
                 ambientBg: 'radial-gradient(circle at 50% 30%, #2e2008 0%, #08090d 85%)',
                 mentor: 'goku',
@@ -62,7 +59,7 @@ class WorldEngine {
                 id: 'jujutsu_void',
                 name: 'Infinite Void Sanctuary',
                 universe: 'Jujutsu Kaisen',
-                focus: 'Mind, Meditation & Cognitive Deep Focus',
+                focus: 'Cognitive Alpha-Wave Meditation & Deep Focus',
                 environment: 'Starry Void & Cosmic Astral Plane',
                 ambientBg: 'radial-gradient(circle at 50% 30%, #04142e 0%, #05060a 85%)',
                 mentor: 'gojo',
@@ -87,10 +84,10 @@ class WorldEngine {
 
     calculateTimeOfDay() {
         const hour = new Date().getHours();
-        if (hour >= 5 && hour < 10) return 'DAWN';       // 5am - 10am (Rock Lee / Morning Discipline)
-        if (hour >= 10 && hour < 17) return 'DAY';       // 10am - 5pm (Zoro / Compound Training)
-        if (hour >= 17 && hour < 21) return 'DUSK';      // 5pm - 9pm (Asta / High-Effort Conditioning)
-        return 'NIGHT';                                  // 9pm - 5am (Gojo / Domain Meditation & Recovery)
+        if (hour >= 5 && hour < 10) return 'DAWN';       // 5am - 10am (Rock Lee)
+        if (hour >= 10 && hour < 17) return 'DAY';       // 10am - 5pm (Zoro)
+        if (hour >= 17 && hour < 21) return 'DUSK';      // 5pm - 9pm (Asta)
+        return 'NIGHT';                                  // 9pm - 5am (Gojo)
     }
 
     updateWorldTimeCycle() {
@@ -105,15 +102,11 @@ class WorldEngine {
             timePill.innerText = icons[this.timeOfDay] || this.timeOfDay;
         }
 
-        // Spawn time-appropriate character if none currently locked in training
         if (!this.activeCharacter || !this.activeCharacter.isTraining) {
             this.spawnTimeOfDayCharacter();
         }
     }
 
-    /**
-     * Determines which character walks onto the training ground
-     */
     spawnTimeOfDayCharacter() {
         const charMap = {
             'DAWN': {
@@ -122,7 +115,7 @@ class WorldEngine {
                 universe: 'Naruto',
                 role: 'Discipline Master',
                 avatar: '🥊',
-                greeting: 'You came. Good! Today, we forge unbreakable discipline through bodyweight repetition!',
+                greeting: 'You came! Good! Today, we forge unbreakable discipline through bodyweight repetition!',
                 missionTitle: "Rock Lee's Foundation Trial",
                 exercises: [
                     { name: 'Strict Hollow Push-ups', sets: '3 × 15' },
@@ -138,15 +131,15 @@ class WorldEngine {
                 universe: 'One Piece',
                 role: 'Warrior Mentor',
                 avatar: '⚔️',
-                greeting: 'Three swords are useless if your vessel cannot carry them. Let’s see your progressive overload today.',
+                greeting: 'Today, we test your strength. Lock in your form and dominate each progressive overload set.',
                 missionTitle: "Zoro's Iron Vessel Protocol",
                 exercises: [
-                    { name: 'Heavy Barbell Deadlift', sets: '4 × 6 (RIR 2)' },
-                    { name: 'Barbell Overhead Press', sets: '3 × 8' },
-                    { name: 'Weighted Pull-ups / Rows', sets: '3 × 8-10' },
+                    { name: 'Barbell Back Squat', sets: '4 × 10 (80kg)' },
+                    { name: 'Barbell Overhead Press', sets: '3 × 8 (45kg)' },
+                    { name: 'Weighted Pull-ups', sets: '3 × 8 (10kg)' },
                     { name: 'Loaded Carry / Farmer Walks', sets: '3 × 50m' }
                 ],
-                reward: { bodyXp: 120, discXp: 60, gold: 150 }
+                reward: { bodyXp: 180, discXp: 60, gold: 150 }
             },
             'DUSK': {
                 id: 'asta',
@@ -154,13 +147,13 @@ class WorldEngine {
                 universe: 'Black Clover',
                 role: 'Willpower Limit Breaker',
                 avatar: '🗡️',
-                greeting: 'My magic is never giving up! Push past your fatigue limit and conquer today’s quota!',
+                greeting: 'Not giving up is my magic! Push your heart rate to the absolute limit and conquer today’s quota!',
                 missionTitle: "Asta's Anti-Fatigue Circuit",
                 exercises: [
                     { name: 'Explosive Jump Squats', sets: '4 × 15' },
                     { name: 'Diamond Push-ups', sets: '4 × 12' },
                     { name: 'Hanging Knee/Leg Raises', sets: '3 × 12' },
-                    { name: 'Shadow Boxing / Fast Steps', sets: '5 min finisher' }
+                    { name: 'Shadow Sprints / Fast Steps', sets: '5 min finisher' }
                 ],
                 reward: { bodyXp: 110, discXp: 70, gold: 140 }
             },
@@ -170,11 +163,11 @@ class WorldEngine {
                 universe: 'Jujutsu Kaisen',
                 role: 'Focus & Meditation Guide',
                 avatar: '🌌',
-                greeting: 'Your body has fought well today. Now, silence the noise outside and master your mind inside the Void.',
+                greeting: 'Your body has fought well today. Now, step inside the Infinite Void and absorb pure clarity.',
                 missionTitle: "Gojo's Domain: Limitless Meditation",
                 isMeditation: true,
                 durationMins: 10,
-                reward: { mindXp: 90, recXp: 60, gold: 150 }
+                reward: { mindXp: 100, recXp: 50, gold: 100 }
             }
         };
 
@@ -182,9 +175,6 @@ class WorldEngine {
         this.renderCharacterWorldInteraction();
     }
 
-    /**
-     * Switch current Multiverse Realm
-     */
     switchRealm(realmId) {
         if (!this.realms[realmId]) return;
         const playerLvl = window.systemState ? window.systemState.data.player.hunterLevel : 1;
@@ -214,13 +204,15 @@ class WorldEngine {
         this.renderCharacterWorldInteraction();
     }
 
-    /**
-     * Character Relationship Management
-     */
     loadRelationships() {
         try {
-            const raw = localStorage.getItem('HUNTER_CHAR_RELATIONSHIPS_V3');
-            this.characterRelationships = raw ? JSON.parse(raw) : {};
+            const raw = localStorage.getItem('HUNTER_CHAR_RELATIONSHIPS_V3_2');
+            this.characterRelationships = raw ? JSON.parse(raw) : {
+                'zoro': { setsTrained: 18, affinity: 72, stageIndex: 2 },
+                'rock_lee': { setsTrained: 24, affinity: 85, stageIndex: 2 },
+                'gojo': { setsTrained: 12, affinity: 60, stageIndex: 1 },
+                'asta': { setsTrained: 8, affinity: 40, stageIndex: 1 }
+            };
         } catch (e) {
             this.characterRelationships = {};
         }
@@ -228,51 +220,69 @@ class WorldEngine {
 
     saveRelationships() {
         try {
-            localStorage.setItem('HUNTER_CHAR_RELATIONSHIPS_V3', JSON.stringify(this.characterRelationships));
+            localStorage.setItem('HUNTER_CHAR_RELATIONSHIPS_V3_2', JSON.stringify(this.characterRelationships));
         } catch (e) {}
+    }
+
+    getRelationshipTiers() {
+        return [
+            { name: 'FIRST MEETING', reqSets: 0 },
+            { name: 'TRAINING PARTNER', reqSets: 5 },
+            { name: 'TRUSTED WARRIOR', reqSets: 15 },
+            { name: 'ELITE MENTOR', reqSets: 30 },
+            { name: 'LEGENDARY COMPANION', reqSets: 50 }
+        ];
     }
 
     getRelationship(charId) {
         if (!this.characterRelationships[charId]) {
             this.characterRelationships[charId] = {
-                sessionsCompleted: 0,
-                stage: 'First Meeting',
-                level: 1,
+                setsTrained: 0,
                 affinity: 0,
-                lastPerformanceRecord: null
+                stageIndex: 0,
+                lastSessionDate: null
             };
         }
         return this.characterRelationships[charId];
     }
 
-    recordSessionWithCharacter(charId, performanceData = {}) {
-        const rel = this.getRelationship(charId);
-        rel.sessionsCompleted += 1;
-        rel.affinity += 25;
-        rel.lastPerformanceRecord = {
-            date: new Date().toISOString(),
-            ...performanceData
+    recordMentorTraining(mentorNameOrId, setsCount = 1) {
+        const idMap = {
+            'Roronoa Zoro': 'zoro',
+            'Zoro': 'zoro',
+            'Rock Lee': 'rock_lee',
+            'Satoru Gojo': 'gojo',
+            'Gojo Satoru': 'gojo',
+            'Asta': 'asta',
+            'Sung Jin-Woo': 'jinwoo'
         };
+        const charId = idMap[mentorNameOrId] || mentorNameOrId.toLowerCase().replace(/\s+/g, '_');
+        const rel = this.getRelationship(charId);
 
-        // Progressive relationship evolution
-        if (rel.sessionsCompleted >= 25) { rel.stage = 'Legendary Companion'; rel.level = 5; }
-        else if (rel.sessionsCompleted >= 15) { rel.stage = 'Elite Mentor'; rel.level = 4; }
-        else if (rel.sessionsCompleted >= 7) { rel.stage = 'Trusted Warrior'; rel.level = 3; }
-        else if (rel.sessionsCompleted >= 2) { rel.stage = 'Training Partner'; rel.level = 2; }
-        else { rel.stage = 'First Meeting'; rel.level = 1; }
+        rel.setsTrained += setsCount;
+        rel.affinity = Math.min(100, rel.affinity + setsCount * 4);
 
+        const tiers = this.getRelationshipTiers();
+        for (let i = tiers.length - 1; i >= 0; i--) {
+            if (rel.setsTrained >= tiers[i].reqSets) {
+                rel.stageIndex = i;
+                break;
+            }
+        }
+
+        rel.lastSessionDate = new Date().toISOString();
         this.saveRelationships();
-        return rel;
+        this.renderCharacterWorldInteraction();
     }
 
-    /**
-     * Renders character speech, dynamic relationship pill, and training prompt in the World Hub
-     */
     renderCharacterWorldInteraction() {
         const char = this.activeCharacter;
         if (!char) return;
 
         const rel = this.getRelationship(char.id);
+        const tiers = this.getRelationshipTiers();
+        const currentTier = tiers[rel.stageIndex] || tiers[0];
+
         const speechEl = document.getElementById('world-character-speech');
         const nameEl = document.getElementById('world-character-name');
         const avatarEl = document.getElementById('world-character-avatar');
@@ -282,25 +292,45 @@ class WorldEngine {
         if (nameEl) nameEl.innerText = char.name.toUpperCase();
         if (avatarEl) avatarEl.innerText = char.avatar;
         if (relEl) {
-            relEl.innerText = `${rel.stage.toUpperCase()} (Lvl ${rel.level})`;
-            relEl.className = `char-rel-pill rel-lvl-${rel.level}`;
+            relEl.innerText = `${currentTier.name} (Affinity: ${rel.affinity}%)`;
+            relEl.className = `char-rel-pill rel-lvl-${rel.stageIndex + 1}`;
         }
 
-        // Context-aware speech based on relationship and history
+        // Generate relationship visual progression track
+        const relTrackHtml = `
+            <div class="mentor-relationship-track mt-10">
+                <div class="mrt-header font-10 text-muted" style="display:flex; justify-content:space-between;">
+                    <span>RELATIONSHIP PROGRESSION</span>
+                    <strong class="highlight-cyan">${currentTier.name} (${rel.affinity}%)</strong>
+                </div>
+                <div class="mrt-steps-row mt-6">
+                    ${tiers.map((t, idx) => {
+                        const isDone = idx < rel.stageIndex;
+                        const isCurrent = idx === rel.stageIndex;
+                        return `
+                            <div class="mrt-step-item ${isDone ? 'mrt-done' : ''} ${isCurrent ? 'mrt-active' : 'mrt-locked'}">
+                                <span class="mrt-icon">${isDone ? '✓' : isCurrent ? `● ${rel.affinity}%` : '🔒'}</span>
+                                <span class="mrt-title font-9">${t.name}</span>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `;
+
         let dynamicDialogue = char.greeting;
-        if (rel.sessionsCompleted > 0 && rel.lastPerformanceRecord) {
+        if (rel.setsTrained > 0) {
             if (char.id === 'zoro') {
-                dynamicDialogue = `“You’ve logged ${rel.sessionsCompleted} sessions with me. Last time your output pushed past limits. Let's see your progressive overload today!”`;
+                dynamicDialogue = `“We’ve logged ${rel.setsTrained} sets together. Your posture under 80kg is solid. Let’s make today’s training count.”`;
             } else if (char.id === 'rock_lee') {
-                dynamicDialogue = `“Session #${rel.sessionsCompleted + 1}! Hard work never betrays the spirit! Let's conquer this discipline set!”`;
+                dynamicDialogue = `“${rel.setsTrained} sets of pure discipline logged! The flame of youth burns brighter with every repetition!”`;
             } else if (char.id === 'gojo') {
-                dynamicDialogue = `“Welcome back to the Void. Your cognitive control has been sharpening. Ready for 10 minutes of pure clarity?”`;
+                dynamicDialogue = `“Your focus is stabilizing nicely. Ready to step back inside the Void for another calibration?”`;
             }
         }
 
         if (speechEl) speechEl.innerText = dynamicDialogue;
 
-        // Render World Mission Card
         if (missionCard) {
             if (char.isMeditation) {
                 missionCard.innerHTML = `
@@ -308,7 +338,8 @@ class WorldEngine {
                         <span class="wmc-tag highlight-cyan">🧘 DAILY COGNITIVE PROTOCOL</span>
                         <h3 class="wmc-title">${char.missionTitle}</h3>
                     </div>
-                    <p class="wmc-desc mt-6 font-12 text-muted">
+                    ${relTrackHtml}
+                    <p class="wmc-desc mt-10 font-12 text-muted">
                         Engage Gojo's Domain Expansion to silence digital noise, synchronize breathing, and elevate focus.
                     </p>
                     <div class="wmc-meta mt-10">
@@ -330,9 +361,10 @@ class WorldEngine {
 
                 missionCard.innerHTML = `
                     <div class="wmc-header">
-                        <span class="wmc-tag highlight-gold">⚔️ DAILY CHALLENGE FROM ${char.name.toUpperCase()}</span>
+                        <span class="wmc-tag highlight-gold">⚔️ TODAY'S MENTOR: ${char.name.toUpperCase()}</span>
                         <h3 class="wmc-title">${char.missionTitle}</h3>
                     </div>
+                    ${relTrackHtml}
                     <ul class="wmc-exercise-list mt-10">
                         ${exHtml}
                     </ul>
@@ -341,7 +373,7 @@ class WorldEngine {
                         <span class="csm-pill highlight-gold">🔥 +${char.reward.discXp} Discipline XP</span>
                         <span class="csm-pill highlight-cyan">🪙 +${char.reward.gold} Gold</span>
                     </div>
-                    <button id="btn-begin-world-training" class="btn-primary-holo btn-wide mt-15">
+                    <button id="btn-begin-world-training" class="btn-primary-holo btn-wide mt-15 btn-glow-violet">
                         ⚔ BEGIN TRAINING WITH ${char.name.toUpperCase()}
                     </button>
                 `;
@@ -356,7 +388,7 @@ class WorldEngine {
         if (btnMeditation) {
             btnMeditation.addEventListener('click', () => {
                 if (window.domainMeditation) {
-                    window.domainMeditation.open();
+                    window.domainMeditation.open(10);
                 }
             });
         }
@@ -378,22 +410,18 @@ class WorldEngine {
             confetti({ particleCount: 70, spread: 60, origin: { y: 0.7 } });
         }
 
-        // Award verified XP & Gold through central state engine
         const r = char.reward;
         window.systemState.gainTrackXp('bodyXp', r.bodyXp, `Completed ${char.missionTitle} with ${char.name}`);
         window.systemState.gainTrackXp('disciplineXp', r.discXp, `Discipline Trial: ${char.name}`);
         window.systemState.data.player.gold += r.gold;
         window.systemState.save();
 
-        // Advance character relationship
-        const rel = this.recordSessionWithCharacter(char.id, { exercises: char.exercises });
+        this.recordMentorTraining(char.id, 4);
 
         if (window.app) {
-            window.app.showToast('TRAINING COMPLETE', `${char.name}: “Excellent execution. Your strength evolves.” (+${r.bodyXp} Body XP, +${r.discXp} Disc XP)`);
+            window.app.showToast('TRAINING COMPLETE', `${char.name}: “Well done. Your stats have ascended.” (+${r.bodyXp} Body XP, +${r.discXp} Disc XP)`);
             window.app.syncUI();
         }
-
-        this.renderCharacterWorldInteraction();
     }
 }
 
