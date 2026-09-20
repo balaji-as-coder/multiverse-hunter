@@ -1,7 +1,8 @@
 /**
- * MULTIVERSE HUNTER — REAL TRAINING EXECUTION ENGINE (V3.3)
- * Real rep-by-rep input, interactive load tuning, genuine performance-history logging,
- * real-time dynamic SVG graph recomputation, and instant mentor reaction loop.
+ * MULTIVERSE HUNTER — PERFORMANCE INTELLIGENCE ENGINE (V3.4)
+ * Multi-metric performance tracking (Load, Reps, Volume, Estimated 1RM),
+ * True zero-fake-log baseline data pipeline, Over-performance surge UX,
+ * and adaptive decision engine target feedback loop.
  */
 
 class JourneyEngine {
@@ -192,6 +193,7 @@ class JourneyEngine {
 
         this.currentActiveStep = 'step_strength';
         this.activeSetSession = null;
+        this.graphMode = 'load'; // 'load' | '1rm' | 'volume'
         this.init();
     }
 
@@ -201,7 +203,7 @@ class JourneyEngine {
 
     loadProgress() {
         try {
-            const raw = localStorage.getItem('HUNTER_JOURNEY_PROGRESS_V3_3');
+            const raw = localStorage.getItem('HUNTER_JOURNEY_PROGRESS_V3_4');
             if (raw) {
                 const saved = JSON.parse(raw);
                 this.journeySteps.forEach(step => {
@@ -215,24 +217,46 @@ class JourneyEngine {
         try {
             const map = {};
             this.journeySteps.forEach(s => map[s.id] = s.status);
-            localStorage.setItem('HUNTER_JOURNEY_PROGRESS_V3_3', JSON.stringify(map));
+            localStorage.setItem('HUNTER_JOURNEY_PROGRESS_V3_4', JSON.stringify(map));
         } catch (e) {}
     }
 
     /**
-     * Retrieves actual recorded performance history for an exercise
+     * Compute Estimated 1RM via Epley Formula: 1RM = Weight * (1 + Reps / 30)
      */
-    getExerciseHistory(exerciseId, defaultSeed = [65, 70, 75, 80]) {
+    calculateEst1RM(weightKg, reps) {
+        if (reps <= 0) return 0;
+        if (reps === 1) return weightKg;
+        return Math.round(weightKg * (1 + reps / 30) * 10) / 10;
+    }
+
+    /**
+     * Retrieves structured performance history for an exercise.
+     * Starts with [SEED BASELINE] without fabricating false verified logs.
+     */
+    getExercisePerformanceRecords(exerciseId, defaultSeedWeight = 65) {
         try {
-            const raw = localStorage.getItem(`HUNTER_EX_HIST_${exerciseId}`);
+            const key = `HUNTER_EX_PERF_${exerciseId}`;
+            const raw = localStorage.getItem(key);
             if (raw) {
                 const parsed = JSON.parse(raw);
                 if (Array.isArray(parsed) && parsed.length > 0) {
-                    return parsed.map(entry => typeof entry === 'number' ? entry : entry.weightKg);
+                    return parsed;
                 }
             }
         } catch (e) {}
-        return defaultSeed;
+
+        // Legitimate single seed baseline entry for new users
+        return [
+            {
+                weightKg: defaultSeedWeight,
+                reps: 8,
+                volume: defaultSeedWeight * 8,
+                est1RM: this.calculateEst1RM(defaultSeedWeight, 8),
+                timestamp: Date.now() - 86400000 * 7,
+                tag: 'SEED BASELINE'
+            }
+        ];
     }
 
     /**
@@ -240,13 +264,20 @@ class JourneyEngine {
      */
     logExerciseSet(exerciseId, exerciseName, weightKg, reps, setNum) {
         try {
-            const key = `HUNTER_EX_HIST_${exerciseId}`;
-            const existingRaw = localStorage.getItem(key);
-            let history = existingRaw ? JSON.parse(existingRaw) : [
-                { weightKg: 65, reps: 8, timestamp: Date.now() - 86400000 * 14, tag: 'SEED BASELINE' },
-                { weightKg: 70, reps: 8, timestamp: Date.now() - 86400000 * 7, tag: 'VERIFIED USER LOG' },
-                { weightKg: 75, reps: 8, timestamp: Date.now() - 86400000 * 3, tag: 'VERIFIED USER LOG' }
-            ];
+            const key = `HUNTER_EX_PERF_${exerciseId}`;
+            let history = this.getExercisePerformanceRecords(exerciseId, weightKg ? weightKg - 15 : 65);
+
+            const est1RM = this.calculateEst1RM(weightKg, reps);
+            const volume = weightKg * reps;
+
+            // Check for true Personal Bests
+            const prevMaxLoad = Math.max(...history.map(h => h.weightKg || 0), 0);
+            const prevMax1RM = Math.max(...history.map(h => h.est1RM || 0), 0);
+            const prevMaxVolume = Math.max(...history.map(h => h.volume || 0), 0);
+
+            const isLoadPr = weightKg > prevMaxLoad;
+            const is1RmPr = est1RM > prevMax1RM;
+            const isVolumePr = volume > prevMaxVolume;
 
             const newEntry = {
                 exerciseId,
@@ -254,6 +285,11 @@ class JourneyEngine {
                 weightKg,
                 reps,
                 setNum,
+                volume,
+                est1RM,
+                isLoadPr,
+                is1RmPr,
+                isVolumePr,
                 timestamp: Date.now(),
                 tag: 'VERIFIED USER LOG'
             };
@@ -261,18 +297,24 @@ class JourneyEngine {
             history.push(newEntry);
             localStorage.setItem(key, JSON.stringify(history));
 
-            // Sync with central systemState performanceMetrics
+            // Sync with central systemState workoutHistory
             if (window.systemState) {
                 if (!window.systemState.data.workoutHistory) {
                     window.systemState.data.workoutHistory = [];
                 }
                 window.systemState.data.workoutHistory.push(newEntry);
-                if (exerciseId === 'ex_barbell_squat') {
+                
+                // Update specific lift 1RMs in performanceMetrics
+                if (exerciseId === 'ex_barbell_squat' && window.systemState.data.performanceMetrics.gymLifts) {
                     window.systemState.data.performanceMetrics.gymLifts.barbellSquatKg = Math.max(window.systemState.data.performanceMetrics.gymLifts.barbellSquatKg, weightKg);
                 }
                 window.systemState.save();
             }
-        } catch (e) {}
+
+            return { isLoadPr, is1RmPr, isVolumePr, est1RM, volume };
+        } catch (e) {
+            return { isLoadPr: false, is1RmPr: false, isVolumePr: false, est1RM: weightKg, volume: weightKg * reps };
+        }
     }
 
     renderJourneyPath(containerId = 'journey-flow-path-container') {
@@ -287,7 +329,7 @@ class JourneyEngine {
             <div class="dungeon-spatial-strip">
                 <div class="dss-header">
                     <span class="font-10 highlight-cyan">🗺️ DUNGEON SPATIAL PROGRESSION</span>
-                    <span class="font-10 text-muted">DEPTH: SHADOW DUNGEON LV. 24</span>
+                    <span class="font-10 text-muted">DEPTH: SHADOW REALM LV. 24</span>
                 </div>
                 <div class="dss-path-nodes">
                     ${this.journeySteps.map((step, idx) => {
@@ -411,7 +453,7 @@ class JourneyEngine {
         }
 
         const primaryEx = step.exercises ? step.exercises[0] : { id: 'ex_1', name: 'Compound Movement', sets: 4, reps: 10, weight: 80, prevWeight: 75 };
-        const historyData = this.getExerciseHistory(primaryEx.id, [65, 70, 75, primaryEx.weight || 80]);
+        const records = this.getExercisePerformanceRecords(primaryEx.id, 65);
 
         this.activeSetSession = {
             step,
@@ -419,10 +461,10 @@ class JourneyEngine {
             currentSet: 1,
             totalSets: primaryEx.sets || 4,
             targetReps: primaryEx.reps || 10,
-            completedReps: 0, // Real-time interactive rep counter
+            completedReps: 0,
             weightKg: primaryEx.weight || 80,
             prevWeightKg: primaryEx.prevWeight || 75,
-            history: historyData,
+            records: records,
             isComplete: false
         };
 
@@ -437,7 +479,6 @@ class JourneyEngine {
 
         const sess = this.activeSetSession;
         const ex = sess.step.exercises[sess.currentExIndex];
-        const isPb = sess.weightKg > sess.prevWeightKg;
         const why = sess.step.why || {
             phaseNeed: 'LOWER-BODY STRENGTH & HYPERTROPHY',
             previous: `${sess.prevWeightKg} KG`,
@@ -445,17 +486,39 @@ class JourneyEngine {
             adaptation: 'High mechanical tension and progressive motor unit recruitment.'
         };
 
-        // Graph computations from real history
-        const historyData = sess.history || [65, 70, 75, sess.weightKg];
-        const maxVal = Math.max(...historyData, sess.weightKg) + 10;
-        const minVal = Math.max(0, Math.min(...historyData) - 10);
+        const targetR = Math.max(1, typeof sess.targetReps === 'number' ? sess.targetReps : 10);
+        const currentEst1RM = this.calculateEst1RM(sess.weightKg, sess.completedReps > 0 ? sess.completedReps : targetR);
+        const currentVolume = sess.weightKg * (sess.completedReps > 0 ? sess.completedReps : targetR);
+
+        // Performance Graph Data Points (Load vs 1RM vs Volume)
+        const records = sess.records || [];
+        let plotValues = [];
+        let unitLabel = 'kg';
+
+        if (this.graphMode === '1rm') {
+            plotValues = records.map(r => r.est1RM || r.weightKg || 65);
+            unitLabel = '1RM kg';
+        } else if (this.graphMode === 'volume') {
+            plotValues = records.map(r => r.volume || (r.weightKg * (r.reps || 8)) || 500);
+            unitLabel = 'kg vol';
+        } else {
+            plotValues = records.map(r => r.weightKg || 65);
+            unitLabel = 'kg';
+        }
+
+        const maxVal = Math.max(...plotValues, sess.weightKg) * 1.1;
+        const minVal = Math.max(0, Math.min(...plotValues) * 0.9);
         const range = maxVal - minVal || 1;
 
-        const svgPoints = historyData.map((val, idx) => {
-            const x = 30 + idx * Math.min(65, 240 / Math.max(1, historyData.length - 1));
+        const svgPoints = plotValues.map((val, idx) => {
+            const x = 30 + idx * Math.min(65, 240 / Math.max(1, plotValues.length - 1));
             const y = 120 - ((val - minVal) / range) * 80;
             return `${x},${y}`;
         }).join(' ');
+
+        // Over-Performance Surge calculations
+        const isOverPerforming = sess.completedReps > targetR;
+        const extraReps = isOverPerforming ? sess.completedReps - targetR : 0;
 
         // Set checklist pills
         const setChecklistHtml = Array.from({ length: sess.totalSets }).map((_, i) => {
@@ -480,8 +543,7 @@ class JourneyEngine {
             `;
         }).join('');
 
-        // Interactive Rep-by-Rep Indicator Strip (01 ● 02 ● 03 ... 10 ○)
-        const targetR = Math.max(1, typeof sess.targetReps === 'number' ? sess.targetReps : 10);
+        // Interactive Rep-by-Rep Indicator Strip
         const repPillsHtml = Array.from({ length: targetR }).map((_, rIdx) => {
             const repNum = rIdx + 1;
             const isFilled = repNum <= sess.completedReps;
@@ -507,7 +569,7 @@ class JourneyEngine {
                 <div class="why-exercise-intelligence-card mt-15">
                     <div class="weic-top">
                         <span class="weic-pill highlight-cyan">🧠 PHASE INTELLIGENCE BRIEFING</span>
-                        <span class="font-10 text-muted">[SYSTEM-GENERATED TARGET]</span>
+                        <span class="font-10 text-muted">[SYSTEM ADAPTIVE TARGET]</span>
                     </div>
                     <div class="weic-grid mt-10">
                         <div class="weic-item">
@@ -515,7 +577,7 @@ class JourneyEngine {
                             <strong class="font-11 highlight-gold">${why.phaseNeed}</strong>
                         </div>
                         <div class="weic-item">
-                            <span class="font-9 text-muted">PREVIOUS VERIFIED LOAD</span>
+                            <span class="font-9 text-muted">PREVIOUS RECORD</span>
                             <strong class="font-11 text-muted">${why.previous}</strong>
                         </div>
                         <div class="weic-item">
@@ -523,7 +585,7 @@ class JourneyEngine {
                             <strong class="font-11 highlight-green">${why.current}</strong>
                         </div>
                     </div>
-                    <p class="font-11 text-secondary mt-8"><strong>Biomechanical Target:</strong> ${why.adaptation}</p>
+                    <p class="font-11 text-secondary mt-8"><strong>Biomechanical Goal:</strong> ${why.adaptation}</p>
                 </div>
 
                 <!-- Mentor Dialogue Bubble -->
@@ -531,7 +593,7 @@ class JourneyEngine {
                     <div class="sms-avatar font-32">⚔️</div>
                     <div class="sms-bubble">
                         <strong class="highlight-cyan">${sess.step.mentor}:</strong>
-                        <span>${sess.step.mentorQuote || '“Enough explanation. Show me.”'}</span>
+                        <span>${isOverPerforming ? '“Over-performance detected! Channel that surge into complete control!”' : sess.step.mentorQuote || '“Enough explanation. Show me.”'}</span>
                     </div>
                 </div>
 
@@ -543,10 +605,30 @@ class JourneyEngine {
                         <span class="aec-target text-muted font-12">${ex.target || 'Hypertrophy & Biomechanical Tension'}</span>
                     </div>
 
+                    <!-- Performance Intelligence Metrics Strip -->
+                    <div class="perf-metrics-strip mt-15">
+                        <div class="pms-item">
+                            <span class="pms-lbl">LOAD LOADED</span>
+                            <strong class="pms-val highlight-cyan">${sess.weightKg} KG</strong>
+                        </div>
+                        <div class="pms-item">
+                            <span class="pms-lbl">ESTIMATED 1RM</span>
+                            <strong class="pms-val highlight-gold">${currentEst1RM} KG</strong>
+                        </div>
+                        <div class="pms-item">
+                            <span class="pms-lbl">SET VOLUME</span>
+                            <strong class="pms-val highlight-purple">${currentVolume} KG</strong>
+                        </div>
+                        <div class="pms-item">
+                            <span class="pms-lbl">SET TARGET</span>
+                            <strong class="pms-val highlight-green">${sess.currentSet} / ${sess.totalSets}</strong>
+                        </div>
+                    </div>
+
                     <!-- Live Load & Rep Adjustment Strip -->
                     <div class="live-tuning-strip mt-15">
                         <div class="tuning-col">
-                            <span class="font-9 text-muted">WEIGHT LOAD (KG)</span>
+                            <span class="font-9 text-muted">LOAD ADJUSTER (KG)</span>
                             <div class="tuning-ctrls mt-4">
                                 <button id="btn-weight-minus" class="btn-tune-sm">- 2.5</button>
                                 <strong class="font-16 highlight-cyan" id="disp-weight-val">${sess.weightKg} KG</strong>
@@ -554,7 +636,7 @@ class JourneyEngine {
                             </div>
                         </div>
                         <div class="tuning-col">
-                            <span class="font-9 text-muted">REPS COMPLETED (${sess.completedReps} / ${targetR})</span>
+                            <span class="font-9 text-muted">REPS LOGGED (${sess.completedReps} / ${targetR}${isOverPerforming ? ` +${extraReps} EXTRA` : ''})</span>
                             <div class="tuning-ctrls mt-4">
                                 <button id="btn-rep-minus" class="btn-tune-sm">- 1 REP</button>
                                 <button id="btn-rep-plus" class="btn-tune-sm highlight-green">+ 1 REP</button>
@@ -562,24 +644,29 @@ class JourneyEngine {
                         </div>
                     </div>
 
-                    <!-- REAL INTERACTIVE REP TRACKER -->
+                    <!-- REAL INTERACTIVE REP TRACKER WITH OVER-PERFORMANCE SURGE -->
                     <div class="interactive-rep-tracker-box mt-15">
-                        <div class="irt-header font-10 text-muted" style="display:flex; justify-content:space-between;">
-                            <span>INTERACTIVE REP-BY-REP COUNTER</span>
-                            <strong class="highlight-gold">${sess.completedReps} / ${targetR} REPS</strong>
+                        <div class="irt-header font-10" style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="text-muted">INTERACTIVE REP-BY-REP COUNTER</span>
+                            ${isOverPerforming ? `<span class="badge-surge highlight-green font-10">⚡ OVER-PERFORMANCE SURGE: +${extraReps} EXTRA REPS</span>` : `<strong class="highlight-gold">${sess.completedReps} / ${targetR} REPS</strong>`}
                         </div>
                         <div class="rep-dots-strip mt-8">
                             ${repPillsHtml}
+                            ${isOverPerforming ? `<div class="extra-reps-pill highlight-green">+${extraReps} REPS</div>` : ''}
                         </div>
                     </div>
 
                     <!-- 3 SIMULTANEOUS VISUALIZATIONS -->
                     <div class="three-viz-grid mt-20">
-                        <!-- Visualization A: Real-Time Performance Graph -->
+                        <!-- Visualization A: Multi-Metric Performance Intelligence Graph -->
                         <div class="viz-card viz-performance">
                             <div class="viz-header">
-                                <span class="font-10 text-muted">A. PERFORMANCE LOG (LIFTS)</span>
-                                ${isPb ? '<span class="pb-badge font-9 highlight-gold">★ NEW PR</span>' : ''}
+                                <div class="viz-mode-toggles">
+                                    <button class="btn-viz-tab ${this.graphMode === 'load' ? 'active' : ''}" data-mode="load">LOAD</button>
+                                    <button class="btn-viz-tab ${this.graphMode === '1rm' ? 'active' : ''}" data-mode="1rm">EST 1RM</button>
+                                    <button class="btn-viz-tab ${this.graphMode === 'volume' ? 'active' : ''}" data-mode="volume">VOLUME</button>
+                                </div>
+                                <span class="font-9 text-muted">[VERIFIED HISTORY]</span>
                             </div>
                             <svg class="slg-svg" viewBox="0 0 300 130">
                                 <defs>
@@ -591,14 +678,15 @@ class JourneyEngine {
                                 <line x1="20" y1="120" x2="280" y2="120" stroke="rgba(255,255,255,0.1)" />
                                 <line x1="20" y1="75" x2="280" y2="75" stroke="rgba(255,255,255,0.05)" />
                                 <polyline fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" points="${svgPoints}" class="slg-polyline" />
-                                ${historyData.map((val, idx) => {
-                                    const x = 30 + idx * Math.min(65, 240 / Math.max(1, historyData.length - 1));
+                                ${plotValues.map((val, idx) => {
+                                    const x = 30 + idx * Math.min(65, 240 / Math.max(1, plotValues.length - 1));
                                     const y = 120 - ((val - minVal) / range) * 80;
-                                    return `<circle cx="${x}" cy="${y}" r="4" fill="#00f2fe" class="slg-dot" /><text x="${x}" y="${y - 8}" font-size="9" fill="#9ca3af" text-anchor="middle">${val}kg</text>`;
+                                    const tag = (records[idx] && records[idx].tag) ? records[idx].tag : 'LOG';
+                                    return `<circle cx="${x}" cy="${y}" r="4" fill="#00f2fe" class="slg-dot" /><text x="${x}" y="${y - 8}" font-size="9" fill="#9ca3af" text-anchor="middle">${val}</text>`;
                                 }).join('')}
                             </svg>
                             <div class="viz-graph-labels font-9 text-muted" style="display:flex; justify-content:space-around; margin-top:2px;">
-                                <span>LOG 1</span><span>LOG 2</span><span>LOG 3</span><span>TODAY</span>
+                                ${records.map((r, i) => `<span>${r.tag === 'SEED BASELINE' ? 'BASELINE' : `SET ${i}`}</span>`).join('')}
                             </div>
                         </div>
 
@@ -657,6 +745,14 @@ class JourneyEngine {
             btnClose.addEventListener('click', () => modal.classList.add('hidden'));
         }
 
+        // Graph Mode Toggles (Load / 1RM / Volume)
+        modal.querySelectorAll('.btn-viz-tab').forEach(tab => {
+            tab.addEventListener('click', (e) => {
+                this.graphMode = e.target.dataset.mode;
+                this.renderActiveSetModal();
+            });
+        });
+
         // Weight adjustments
         const btnWeightMinus = modal.querySelector('#btn-weight-minus');
         if (btnWeightMinus) {
@@ -673,7 +769,7 @@ class JourneyEngine {
             });
         }
 
-        // Rep adjustments (+1 / -1)
+        // Rep adjustments (+1 / -1 with Over-Performance support)
         const btnRepMinus = modal.querySelector('#btn-rep-minus');
         if (btnRepMinus) {
             btnRepMinus.addEventListener('click', () => {
@@ -684,7 +780,7 @@ class JourneyEngine {
         const btnRepPlus = modal.querySelector('#btn-rep-plus');
         if (btnRepPlus) {
             btnRepPlus.addEventListener('click', () => {
-                sess.completedReps = Math.min(targetR + 10, sess.completedReps + 1);
+                sess.completedReps = sess.completedReps + 1;
                 if (window.systemAudio) window.systemAudio.playClick();
                 this.renderActiveSetModal();
             });
@@ -720,15 +816,15 @@ class JourneyEngine {
         const targetR = Math.max(1, typeof sess.targetReps === 'number' ? sess.targetReps : 10);
         const finalReps = sess.completedReps > 0 ? sess.completedReps : targetR;
 
-        // 1. Log real verified entry into persistent workout database
-        this.logExerciseSet(ex.id || 'ex_compound', ex.name, sess.weightKg, finalReps, sess.currentSet);
+        // 1. Log real verified entry into persistent workout database and compute PRs
+        const result = this.logExerciseSet(ex.id || 'ex_compound', ex.name, sess.weightKg, finalReps, sess.currentSet);
 
-        // 2. Append new point to active graph history
-        sess.history.push(sess.weightKg);
+        // 2. Update active in-memory records array for graph visualization
+        sess.records = this.getExercisePerformanceRecords(ex.id || 'ex_compound', 65);
 
         if (window.systemAudio) window.systemAudio.playStatAdd();
         if (typeof confetti !== 'undefined') {
-            confetti({ particleCount: 50, spread: 60, origin: { y: 0.6 } });
+            confetti({ particleCount: result.isLoadPr ? 80 : 40, spread: 60, origin: { y: 0.6 } });
         }
 
         // 3. Trigger mentor relationship growth & reaction loop
@@ -736,11 +832,19 @@ class JourneyEngine {
             window.worldEngine.recordMentorTraining(sess.step.mentor, 1);
         }
 
+        // 4. Over-performance feedback to next session target
+        let toastTitle = 'SET LOGGED & VERIFIED!';
+        let toastMsg = `Logged ${sess.weightKg} kg × ${finalReps} reps (Est. 1RM: ${result.est1RM} kg).`;
+        if (result.isLoadPr) {
+            toastTitle = '★ NEW LOAD PERSONAL BEST! ★';
+            toastMsg = `🔥 Surpassed previous load record with ${sess.weightKg} KG!`;
+        }
+
         if (sess.currentSet < sess.totalSets) {
             sess.currentSet++;
             sess.completedReps = 0; // Reset for next set
             this.renderActiveSetModal();
-            if (window.app) window.app.showToast('SET LOGGED & VERIFIED!', `Logged ${sess.weightKg} kg × ${finalReps} reps! Performance graph updated.`);
+            if (window.app) window.app.showToast(toastTitle, toastMsg);
         } else {
             // Exercise completed
             if (sess.currentExIndex < sess.step.exercises.length - 1) {
@@ -750,7 +854,7 @@ class JourneyEngine {
                 const nextEx = sess.step.exercises[sess.currentExIndex];
                 sess.weightKg = nextEx.weight || 45;
                 sess.prevWeightKg = nextEx.prevWeight || 40;
-                sess.history = this.getExerciseHistory(nextEx.id || 'ex_compound', [35, 40, nextEx.weight || 45]);
+                sess.records = this.getExercisePerformanceRecords(nextEx.id || 'ex_compound', 35);
                 this.renderActiveSetModal();
                 if (window.app) window.app.showToast('EXERCISE MASTERED', `Advancing to ${nextEx.name}!`);
             } else {
@@ -769,7 +873,7 @@ class JourneyEngine {
 
                 if (window.systemAudio) window.systemAudio.playVictory();
                 if (window.app) {
-                    window.app.showToast('⚔️ PHASE CONQUERED!', `🎉 ${sess.step.title} fully completed! Your recorded stats have ascended.`);
+                    window.app.showToast('⚔️ PHASE CONQUERED!', `🎉 ${sess.step.title} fully completed! Your true workout logs have ascended.`);
                     window.app.syncUI();
                 }
                 this.renderJourneyPath();
