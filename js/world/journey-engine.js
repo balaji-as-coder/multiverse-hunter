@@ -1,8 +1,9 @@
 /**
- * MULTIVERSE HUNTER — PERFORMANCE INTELLIGENCE ENGINE (V3.4)
+ * MULTIVERSE HUNTER — PERFORMANCE & ADAPTIVE PROGRESSION ENGINE (V3.5)
  * Multi-metric performance tracking (Load, Reps, Volume, Estimated 1RM),
  * True zero-fake-log baseline data pipeline, Over-performance surge UX,
- * and adaptive decision engine target feedback loop.
+ * Real-time dynamic Body XP telemetry from central state, and
+ * Decision Engine Progressive Overload calculation with Recovery Gate validation.
  */
 
 class JourneyEngine {
@@ -193,7 +194,7 @@ class JourneyEngine {
 
         this.currentActiveStep = 'step_strength';
         this.activeSetSession = null;
-        this.graphMode = 'load'; // 'load' | '1rm' | 'volume'
+        this.graphMode = 'load';
         this.init();
     }
 
@@ -203,7 +204,7 @@ class JourneyEngine {
 
     loadProgress() {
         try {
-            const raw = localStorage.getItem('HUNTER_JOURNEY_PROGRESS_V3_4');
+            const raw = localStorage.getItem('HUNTER_JOURNEY_PROGRESS_V3_5');
             if (raw) {
                 const saved = JSON.parse(raw);
                 this.journeySteps.forEach(step => {
@@ -217,23 +218,16 @@ class JourneyEngine {
         try {
             const map = {};
             this.journeySteps.forEach(s => map[s.id] = s.status);
-            localStorage.setItem('HUNTER_JOURNEY_PROGRESS_V3_4', JSON.stringify(map));
+            localStorage.setItem('HUNTER_JOURNEY_PROGRESS_V3_5', JSON.stringify(map));
         } catch (e) {}
     }
 
-    /**
-     * Compute Estimated 1RM via Epley Formula: 1RM = Weight * (1 + Reps / 30)
-     */
     calculateEst1RM(weightKg, reps) {
         if (reps <= 0) return 0;
         if (reps === 1) return weightKg;
         return Math.round(weightKg * (1 + reps / 30) * 10) / 10;
     }
 
-    /**
-     * Retrieves structured performance history for an exercise.
-     * Starts with [SEED BASELINE] without fabricating false verified logs.
-     */
     getExercisePerformanceRecords(exerciseId, defaultSeedWeight = 65) {
         try {
             const key = `HUNTER_EX_PERF_${exerciseId}`;
@@ -246,7 +240,7 @@ class JourneyEngine {
             }
         } catch (e) {}
 
-        // Legitimate single seed baseline entry for new users
+        // Single seed baseline entry for unrecorded exercise
         return [
             {
                 weightKg: defaultSeedWeight,
@@ -259,9 +253,6 @@ class JourneyEngine {
         ];
     }
 
-    /**
-     * Appends a real verified workout set log to persistence
-     */
     logExerciseSet(exerciseId, exerciseName, weightKg, reps, setNum) {
         try {
             const key = `HUNTER_EX_PERF_${exerciseId}`;
@@ -270,7 +261,6 @@ class JourneyEngine {
             const est1RM = this.calculateEst1RM(weightKg, reps);
             const volume = weightKg * reps;
 
-            // Check for true Personal Bests
             const prevMaxLoad = Math.max(...history.map(h => h.weightKg || 0), 0);
             const prevMax1RM = Math.max(...history.map(h => h.est1RM || 0), 0);
             const prevMaxVolume = Math.max(...history.map(h => h.volume || 0), 0);
@@ -297,14 +287,12 @@ class JourneyEngine {
             history.push(newEntry);
             localStorage.setItem(key, JSON.stringify(history));
 
-            // Sync with central systemState workoutHistory
             if (window.systemState) {
                 if (!window.systemState.data.workoutHistory) {
                     window.systemState.data.workoutHistory = [];
                 }
                 window.systemState.data.workoutHistory.push(newEntry);
                 
-                // Update specific lift 1RMs in performanceMetrics
                 if (exerciseId === 'ex_barbell_squat' && window.systemState.data.performanceMetrics.gymLifts) {
                     window.systemState.data.performanceMetrics.gymLifts.barbellSquatKg = Math.max(window.systemState.data.performanceMetrics.gymLifts.barbellSquatKg, weightKg);
                 }
@@ -489,6 +477,12 @@ class JourneyEngine {
         const targetR = Math.max(1, typeof sess.targetReps === 'number' ? sess.targetReps : 10);
         const currentEst1RM = this.calculateEst1RM(sess.weightKg, sess.completedReps > 0 ? sess.completedReps : targetR);
         const currentVolume = sess.weightKg * (sess.completedReps > 0 ? sess.completedReps : targetR);
+
+        // Real Live Body XP from SystemState
+        const sData = window.systemState ? window.systemState.data : null;
+        const bodyTrack = (sData && sData.xpTracks && sData.xpTracks.bodyXp) ? sData.xpTracks.bodyXp : { current: 150, next: 300, level: 1 };
+        const bodyPct = Math.min(100, Math.round((bodyTrack.current / Math.max(1, bodyTrack.next)) * 100));
+        const xpRewardVal = sess.step.xpReward ? (sess.step.xpReward.bodyXp || 180) : 180;
 
         // Performance Graph Data Points (Load vs 1RM vs Volume)
         const records = sess.records || [];
@@ -681,7 +675,6 @@ class JourneyEngine {
                                 ${plotValues.map((val, idx) => {
                                     const x = 30 + idx * Math.min(65, 240 / Math.max(1, plotValues.length - 1));
                                     const y = 120 - ((val - minVal) / range) * 80;
-                                    const tag = (records[idx] && records[idx].tag) ? records[idx].tag : 'LOG';
                                     return `<circle cx="${x}" cy="${y}" r="4" fill="#00f2fe" class="slg-dot" /><text x="${x}" y="${y - 8}" font-size="9" fill="#9ca3af" text-anchor="middle">${val}</text>`;
                                 }).join('')}
                             </svg>
@@ -690,19 +683,19 @@ class JourneyEngine {
                             </div>
                         </div>
 
-                        <!-- Visualization B: Body XP Progression -->
+                        <!-- Visualization B: Real Dynamic Body XP from State -->
                         <div class="viz-card viz-xp">
                             <div class="viz-header">
                                 <span class="font-10 text-muted">B. BODY XP PROGRESSION</span>
-                                <span class="font-10 highlight-cyan">82% LEVEL TO NEXT</span>
+                                <span class="font-10 highlight-cyan">${bodyPct}% (LV. ${bodyTrack.level})</span>
                             </div>
                             <div class="viz-xp-display mt-8">
                                 <div class="viz-xp-bar-shell">
-                                    <div class="viz-xp-bar-fill" style="width: 82%;"></div>
+                                    <div class="viz-xp-bar-fill" style="width: ${bodyPct}%;"></div>
                                 </div>
                                 <div class="viz-xp-labels font-10 mt-6" style="display:flex; justify-content:space-between;">
-                                    <span class="text-muted">Current: 820 / 1000 XP</span>
-                                    <span class="highlight-gold">+180 XP on Clear</span>
+                                    <span class="text-muted">Current: ${bodyTrack.current} / ${bodyTrack.next} XP</span>
+                                    <span class="highlight-gold">+${xpRewardVal} XP on Clear</span>
                                 </div>
                             </div>
                         </div>
@@ -822,17 +815,29 @@ class JourneyEngine {
         // 2. Update active in-memory records array for graph visualization
         sess.records = this.getExercisePerformanceRecords(ex.id || 'ex_compound', 65);
 
+        // 3. Central Decision Engine Adaptive Overload Calculation
+        let decisionProgression = null;
+        if (window.decisionEngine && window.decisionEngine.calculateExerciseProgression) {
+            decisionProgression = window.decisionEngine.calculateExerciseProgression(
+                ex.id || 'ex_compound',
+                sess.weightKg,
+                targetR,
+                finalReps,
+                2
+            );
+        }
+
         if (window.systemAudio) window.systemAudio.playStatAdd();
         if (typeof confetti !== 'undefined') {
             confetti({ particleCount: result.isLoadPr ? 80 : 40, spread: 60, origin: { y: 0.6 } });
         }
 
-        // 3. Trigger mentor relationship growth & reaction loop
+        // 4. Trigger mentor relationship growth & reaction loop
         if (window.worldEngine) {
             window.worldEngine.recordMentorTraining(sess.step.mentor, 1);
         }
 
-        // 4. Over-performance feedback to next session target
+        // 5. Toast Feedback
         let toastTitle = 'SET LOGGED & VERIFIED!';
         let toastMsg = `Logged ${sess.weightKg} kg × ${finalReps} reps (Est. 1RM: ${result.est1RM} kg).`;
         if (result.isLoadPr) {
@@ -873,7 +878,8 @@ class JourneyEngine {
 
                 if (window.systemAudio) window.systemAudio.playVictory();
                 if (window.app) {
-                    window.app.showToast('⚔️ PHASE CONQUERED!', `🎉 ${sess.step.title} fully completed! Your true workout logs have ascended.`);
+                    const nextTargetInfo = decisionProgression ? ` Next Target: ${decisionProgression.nextWeightKg} kg.` : '';
+                    window.app.showToast('⚔️ PHASE CONQUERED!', `🎉 ${sess.step.title} fully completed!${nextTargetInfo}`);
                     window.app.syncUI();
                 }
                 this.renderJourneyPath();

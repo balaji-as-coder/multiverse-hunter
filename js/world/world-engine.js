@@ -216,12 +216,12 @@ class WorldEngine {
 
     loadRelationships() {
         try {
-            const raw = localStorage.getItem('HUNTER_CHAR_RELATIONSHIPS_V3_2');
+            const raw = localStorage.getItem('HUNTER_CHAR_RELATIONSHIPS_V3_5');
             this.characterRelationships = raw ? JSON.parse(raw) : {
-                'zoro': { setsTrained: 18, affinity: 72, stageIndex: 2 },
-                'rock_lee': { setsTrained: 24, affinity: 85, stageIndex: 2 },
-                'gojo': { setsTrained: 12, affinity: 60, stageIndex: 1 },
-                'asta': { setsTrained: 8, affinity: 40, stageIndex: 1 }
+                'zoro': { setsTrained: 0, affinity: 0, stageIndex: 0 },
+                'rock_lee': { setsTrained: 0, affinity: 0, stageIndex: 0 },
+                'gojo': { setsTrained: 0, affinity: 0, stageIndex: 0 },
+                'asta': { setsTrained: 0, affinity: 0, stageIndex: 0 }
             };
         } catch (e) {
             this.characterRelationships = {};
@@ -230,7 +230,7 @@ class WorldEngine {
 
     saveRelationships() {
         try {
-            localStorage.setItem('HUNTER_CHAR_RELATIONSHIPS_V3_2', JSON.stringify(this.characterRelationships));
+            localStorage.setItem('HUNTER_CHAR_RELATIONSHIPS_V3_5', JSON.stringify(this.characterRelationships));
         } catch (e) {}
     }
 
