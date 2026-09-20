@@ -453,6 +453,15 @@ class MasterApp {
         if (window.evolutionChamber) {
             window.evolutionChamber.renderChamber('evolution-chamber-container');
         }
+        if (window.journeyEngine) {
+            window.journeyEngine.renderJourneyPath('journey-flow-path-container');
+        }
+        if (window.skillTreeEngine) {
+            window.skillTreeEngine.renderSkillTree('skill-tree-display-container');
+        }
+        if (window.bossTreeEngine) {
+            window.bossTreeEngine.renderBossAndArcTree('boss-arc-tree-display-container');
+        }
     }
 
     renderNutritionMealsList() {
